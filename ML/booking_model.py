@@ -4,15 +4,21 @@ The decision for every booking request rests on two questions.
 
 1. WHO STAYS?  (`StayModel`)
    A machine-learning model, trained on the 2015-2016 bookings, estimates the chance that
-   this guest really shows up. It learns from segments: deposit type, sales channel, agent,
-   country and how far ahead the booking was made. Recent bookings count more than old
-   ones, because cancellation habits drift over time.
+   this guest really shows up. The default ("combined") averages two views: a plain table
+   of stay rates per segment (deposit, sales segment, lead time), which is steady, and a
+   gradient-boosting model that also reads agent, country, requests and more, which is
+   sharper. Recent bookings count more than old ones. Finally the model is checked against
+   the most recent three months it has NOT seen and corrected for how much it over-promised
+   there, because cancellations keep rising (`StayModel._calibrate`).
 
-2. IS THE ROOM WORTH MORE IF WE KEEP IT?  (`DemandForecast.price_floor`)
-   For each night we look at who booked that same night last year AFTER this point in time.
-   Those are the bidders still to come. We line them up from the highest rate down and hand
-   them the rooms we expect to have free. The rate of the first bidder who would NOT get a
-   room is the price floor of that night: selling below it gives a room away too cheaply.
+2. IS THE ROOM WORTH MORE IF WE KEEP IT?  (`BookingPolicy._price_floor`)
+   Who is still to come for this night? Two estimates are averaged:
+   - last year: who booked that same night last year AFTER this point (`DemandForecast`);
+   - recent weeks: who booked late for the same weekday in the last four weeks, scaled to
+     how busy and how dear this night already is (`RecentDemand`).
+   Those bidders are lined up from the highest rate down and handed the rooms we expect to
+   have free. The rate of the first bidder who would NOT get a room is the price floor of
+   that night: selling below it gives a room away too cheaply.
 
 3. LATE BOOKINGS AND OVERBOOKING  (`BookingPolicy`, late_rule=True)
    We cannot hold a request and wait for a better one: every request is answered at once.
@@ -59,6 +65,27 @@ PERIODS = [(7, "last minute (0-7 days)"), (30, "late (8-30 days)"),
 
 def booking_period(days_ahead: float) -> str:
     return next(name for limit, name in PERIODS if days_ahead <= limit)
+
+
+def _period_index(days_ahead: np.ndarray) -> np.ndarray:
+    limits = [limit for limit, _ in PERIODS[:-1]]
+    return np.searchsorted(limits, np.nan_to_num(days_ahead, nan=0.0), side="left")
+
+
+def _logit(p: np.ndarray) -> np.ndarray:
+    return np.log(p / (1 - p))
+
+
+def _matching_shift(logit: np.ndarray, y: np.ndarray) -> float:
+    """The log-odds shift that makes the average predicted stay chance equal the real one."""
+    lo, hi = -3.0, 3.0
+    for _ in range(40):
+        mid = (lo + hi) / 2
+        if (1 / (1 + np.exp(-(logit - mid)))).mean() > y.mean():
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2
 YEAR = pd.Timedelta(days=364)         # 52 weeks: the same weekday one year later
 
 # --------------------------------------------------------------------------------------
@@ -74,7 +101,7 @@ EXTRA_COLS = ["arrival_dow", "booking_dow", "stay_value", "guests", "rate_per_gu
 # train.csv lists cancelled bookings before the ones that stayed, so row order gives the
 # answer away. A model that leans on it learns nothing about guests.
 FEATURES = CAT_COLS + NUM_COLS + EXTRA_COLS
-MODEL_KINDS = ("segments", "tree", "logistic", "forest", "boosting")
+MODEL_KINDS = ("segments", "tree", "logistic", "forest", "boosting", "combined")
 
 
 def _key(value) -> str:
@@ -125,7 +152,23 @@ class _SegmentTable:
         return np.column_stack([1 - p, p])
 
 
+class _Combined:
+    """Average of the segment table (steady, hard to fool) and gradient boosting (sharp, but
+    leans on inputs such as country whose meaning drifts). Averaged in log-odds."""
+
+    def fit(self, X, y, sample_weight):
+        self.parts = [_make_model(k).fit(X, y, sample_weight=sample_weight) for k in ("segments", "boosting")]
+        return self
+
+    def predict_proba(self, X):
+        logits = [_logit(np.clip(m.predict_proba(X)[:, 1], 0.001, 0.999)) for m in self.parts]
+        p = 1 / (1 + np.exp(-np.mean(logits, axis=0)))
+        return np.column_stack([1 - p, p])
+
+
 def _make_model(kind: str):
+    if kind == "combined":
+        return _Combined()
     if kind == "segments":
         return _SegmentTable()
     if kind == "tree":
@@ -146,14 +189,21 @@ def _make_model(kind: str):
 class StayModel:
     """Estimates P(guest shows up) for a booking."""
 
-    def __init__(self, kind: str = "boosting", recency_days: float = 60.0):
+    def __init__(self, kind: str = "combined", recency_days: float = 60.0,
+                 calibration: str = "period", calibration_days: int = 90, ignore: tuple = ()):
         self.kind = kind
+        self.ignore = [FEATURES.index(f) for f in ignore]   # inputs to blank out (for tests)
         self.recency_days = recency_days   # a booking made this long ago counts 1/e as much
+        self.calibration = calibration     # "period" or "none" -- see _calibrate
+        self.calibration_days = calibration_days
+        self.shift = np.zeros(len(PERIODS))   # per booking period, in log-odds
         self.levels: dict[str, dict[str, float]] = {}
 
     # -- training ----------------------------------------------------------------------
     def fit(self, history: pd.DataFrame) -> "StayModel":
         df = _clean(history)
+        if self.calibration != "none":
+            self._calibrate(df)
         y = 1 - df["cancelled"].to_numpy()
         age = (df["booking_date"].max() - df["booking_date"]).dt.days.to_numpy()
         w = np.exp(-age / self.recency_days)
@@ -174,6 +224,27 @@ class StayModel:
             self.model.fit(X, y, sample_weight=w)
         return self
 
+    def _calibrate(self, df: pd.DataFrame) -> None:
+        """Reality check on the most recent months. Cancellations keep rising, so a model
+        trained on the past promises too many guests. We train a copy WITHOUT the last
+        `calibration_days` of arrivals, see how far it over-promised on them, and lower the
+        final model's predictions by that much (separately for each booking period)."""
+        cut = df["arrival_date"].max() - pd.Timedelta(days=self.calibration_days)
+        old, recent = df[df["arrival_date"] <= cut], df[df["arrival_date"] > cut]
+        if len(old) < 2000 or len(recent) < 500:
+            return
+        probe = StayModel(self.kind, self.recency_days, calibration="none",
+                          ignore=[FEATURES[j] for j in self.ignore]).fit(old)
+        y = 1 - recent["cancelled"].to_numpy()
+        logit = _logit(probe.predict(recent))
+        overall = _matching_shift(logit, y)
+        band = _period_index(recent["days_ahead"].to_numpy(float))
+        for i in range(len(PERIODS)):
+            m = band == i
+            trust = m.sum() / (m.sum() + 300)     # small periods lean on the overall figure
+            own = _matching_shift(logit[m], y[m]) if m.sum() >= 50 else overall
+            self.shift[i] = trust * own + (1 - trust) * overall
+
     # -- batch features (history, commitments, backtests) ------------------------------
     def _matrix(self, df: pd.DataFrame) -> np.ndarray:
         cols = [df[c].map(_key).map(self.levels[c]).to_numpy(float) for c in CAT_COLS]
@@ -184,10 +255,16 @@ class StayModel:
                  df["booking_date"].dt.dayofweek.to_numpy(float),
                  num["nightly_rate"] * num["nights"], guests,
                  num["nightly_rate"] / np.maximum(guests, 1)]
-        return np.column_stack(cols)
+        X = np.column_stack(cols)
+        X[:, self.ignore] = 0.0
+        return X
 
     def _proba(self, X: np.ndarray) -> np.ndarray:
-        return np.clip(self.model.predict_proba(X)[:, 1], 0.001, 0.999)
+        p = np.clip(self.model.predict_proba(X)[:, 1], 0.001, 0.999)
+        if not self.shift.any():
+            return p
+        shift = self.shift[_period_index(X[:, FEATURES.index("days_ahead")])]
+        return np.clip(1 / (1 + np.exp(-(_logit(p) - shift))), 0.001, 0.999)
 
     def predict(self, df: pd.DataFrame) -> np.ndarray:
         """P(stay) for a table of bookings."""
@@ -206,7 +283,9 @@ class StayModel:
         guests = sum(0.0 if math.isnan(num[c]) else num[c] for c in ("adults", "children", "babies"))
         row += [arrival.dayofweek, booked.dayofweek, num["nightly_rate"] * num["nights"], guests,
                 num["nightly_rate"] / max(guests, 1)]
-        return float(self._proba(np.asarray(row, dtype=float).reshape(1, -1))[0])
+        X = np.asarray(row, dtype=float).reshape(1, -1)
+        X[:, self.ignore] = 0.0
+        return float(self._proba(X)[0])
 
 
 # --------------------------------------------------------------------------------------
@@ -249,6 +328,65 @@ class DemandForecast:
         return float(rate[np.searchsorted(expected_guests, free_rooms, side="right")])
 
 
+class RecentDemand:
+    """The same question -- who is still to come? -- answered from the last four weeks.
+
+    For night N, booked L days ahead, we look at the same weekday 1-4 weeks before today
+    (nights whose bookings are all in) and take the requests that came in LATER than L days
+    ahead. They are scaled to night N: if N already has twice the bookings those nights had
+    at the same point, we expect twice the late bidders; if its bookings are 30% dearer, we
+    expect 30% dearer bids. Needs no data from last year, and follows this year's demand.
+    """
+
+    def __init__(self):
+        self.log = defaultdict(list)       # (hotel, night) -> [(days ahead, rate, P(stay))]
+        self._done: dict = {}              # past nights, as arrays sorted by rate
+
+    def observe(self, hotel: str, start: int, nights: int, rate: float, p: float, booked: int) -> None:
+        for t in range(start, start + nights):
+            self.log[(hotel, t)].append((t - booked, rate, p))
+
+    def _past_night(self, key):
+        arrays = self._done.get(key)
+        if arrays is None:
+            rows = np.array(sorted(self.log.get(key, ()), key=lambda r: -r[1]), dtype=float).reshape(-1, 3)
+            arrays = self._done[key] = (rows[:, 0], rows[:, 1], rows[:, 2])
+        return arrays
+
+    def price_floor(self, hotel: str, night: int, today: int, free_rooms: float) -> float:
+        lead = night - today
+        first = lead // 7 + 1                       # nearest same weekday that is already past
+        rates, weights, used, had_n, had_rate = [], [], 0, 0, 0.0
+        for k in range(first, first + 4):
+            ahead, rate, p = self._past_night((hotel, night - 7 * k))
+            if len(ahead) == 0:
+                continue
+            used += 1
+            later = ahead < lead
+            rates.append(rate[later])
+            weights.append(p[later])
+            had_n += int((~later).sum())            # what that night had on the books at this point
+            had_rate += float(rate[~later].sum())
+        if not used:
+            return 0.0
+        now = self.log.get((hotel, night), ())
+        more_demand = float(np.clip((len(now) + 10) / (had_n / used + 10), 0.3, 3.0))
+        dearer = 1.0
+        if len(now) >= 5 and had_n >= 5:
+            dearer = float(np.clip((sum(r[1] for r in now) / len(now)) / (had_rate / had_n), 0.5, 2.5))
+        rate = np.concatenate(rates) * dearer
+        if len(rate) == 0:
+            return 0.0
+        order = np.argsort(-rate)
+        rate = rate[order]
+        if free_rooms <= 0:
+            return float(rate[0])
+        expected_guests = np.cumsum(np.concatenate(weights)[order]) * more_demand / used
+        if expected_guests[-1] <= free_rooms:
+            return 0.0
+        return float(rate[np.searchsorted(expected_guests, free_rooms, side="right")])
+
+
 # --------------------------------------------------------------------------------------
 # The policy
 # --------------------------------------------------------------------------------------
@@ -258,11 +396,18 @@ def _normal_sf(x: float) -> float:
 
 class BookingPolicy:
     def __init__(self, history: pd.DataFrame, commitments: pd.DataFrame,
-                 capacity: dict[str, pd.Series], model_kind: str = "boosting",
-                 demand_multiplier: float = 1.0, late_rule: bool = True):
+                 capacity: dict[str, pd.Series], model_kind: str = "combined",
+                 demand_multiplier: float = 1.0, late_rule: bool = True,
+                 calibration: str = "period", ignore: tuple = (), forecast: str = "blend",
+                 boldness: float = 0.0, drift_per_year: float = 1.0):
         history = _clean(history)
+        # Both lower the stay chances the policy works with, so it books more guests per room.
+        # boldness applies everywhere; drift_per_year grows with the distance from the training
+        # data, because the model over-promises more the further ahead it looks. In log-odds.
+        self.boldness, self.drift_per_year = boldness, drift_per_year
+        self.forecast_mode = forecast   # "last_year", "recent", or "blend" of the two
         commitments = _clean(commitments)
-        self.model = StayModel(model_kind).fit(history)
+        self.model = StayModel(model_kind, calibration=calibration, ignore=ignore).fit(history)
         self._known: dict = {}   # booking_id -> P(stay), filled by preload() in backtests
         self.late_rule = late_rule
 
@@ -304,13 +449,38 @@ class BookingPolicy:
                   * prev["hotel"].map(self.pace).to_numpy(float) * demand_multiplier)
         self.forecast = DemandForecast(prev, weight, self.origin)
 
+        # The second view of future bidders: what the last weeks of requests looked like.
+        self.recent = RecentDemand()
+        late = history[history["arrival_date"] >= self.origin - pd.Timedelta(days=150)]
+        for rows, p in ((late, 1.0 - late["cancelled"].to_numpy(float)),
+                        (commitments, self.model.predict(commitments))):
+            start = (rows["arrival_date"] - self.origin).dt.days.to_numpy()
+            booked = (rows["booking_date"] - self.origin).dt.days.to_numpy()
+            for h, a, n, r, pi, b in zip(rows["hotel"], start, rows["nights"], rows["nightly_rate"], p, booked):
+                self.recent.observe(h, int(a), int(n), float(r), float(pi), int(b))
+
+    def _price_floor(self, hotel: str, night: int, today: int, free_rooms: float) -> float:
+        if self.forecast_mode == "last_year":
+            return self.forecast.price_floor(hotel, night, today, free_rooms)
+        recent = self.recent.price_floor(hotel, night, today, free_rooms)
+        if self.forecast_mode == "recent" or (hotel, night) not in self.forecast.table:
+            return recent
+        return 0.5 * (recent + self.forecast.price_floor(hotel, night, today, free_rooms))
+
+    def _bolder(self, p, day):
+        """Stay chance after the boldness correction, for arrival day `day` (days from the start)."""
+        shift = self.boldness + self.drift_per_year * np.maximum(day, 0) / 365.0
+        if not np.any(shift):
+            return p
+        return np.clip(1 / (1 + np.exp(-(_logit(np.clip(p, 0.001, 0.999)) - shift))), 0.001, 0.999)
+
     def _seat_commitments(self, commitments: pd.DataFrame) -> None:
         """Fill the hotels with the confirmed bookings, day by day. Where they already
         overbook a day, the cheapest arrivals will be walked and so free their later nights."""
         if len(commitments) == 0:
             return
-        p = self.model.predict(commitments)
         day = (commitments["arrival_date"] - self.origin).dt.days.to_numpy()
+        p = self._bolder(self.model.predict(commitments), day)
         value = (commitments["nightly_rate"] * commitments["nights"]).to_numpy(float)
         arrivals = defaultdict(list)
         for h, d, v, n, pi in zip(commitments["hotel"], day, value, commitments["nights"], p):
@@ -345,10 +515,12 @@ class BookingPolicy:
         if p is None:
             p = self.model.predict_one(b)
         start = (pd.Timestamp(b["arrival_date"]).normalize() - self.origin).days
+        p = float(self._bolder(p, start))
         today = (pd.Timestamp(b["booking_date"]).normalize() - self.origin).days
         idx = [t for t in range(start, start + max(int(nights), 1)) if 0 <= t < self.size]
         cap, mu, var = self.cap[hotel], self.mu[hotel], self.var[hotel]
         out = {"p": p, "idx": idx, "value": rate * max(int(nights), 1), "outbid": None,
+               "seen": (hotel, start, max(int(nights), 1), rate, p, today),
                "period": booking_period(_num(b.get("days_ahead")) if b.get("days_ahead") is not None
                                         else start - today)}
         if not idx:
@@ -358,7 +530,7 @@ class BookingPolicy:
             sd = math.sqrt(var[t])
             gap = cap[t] - 0.5 - mu[t]
             risks.append((1.0 if gap < 0 else 0.0) if sd < 1e-9 else _normal_sf(gap / sd))
-            floors.append(self.forecast.price_floor(hotel, t, today, cap[t] - mu[t]))
+            floors.append(self._price_floor(hotel, t, today, cap[t] - mu[t]))
 
         if not self.late_rule:
             # Simple version: on a full night this guest is always the one who is walked.
@@ -397,6 +569,8 @@ class BookingPolicy:
 
     def decide(self, booking: dict) -> bool:
         r = self.last = self._evaluate(booking)   # kept so reports can see why
+        if "seen" in r:
+            self.recent.observe(*r["seen"])        # every request, accepted or not, is demand
         if r["accept"]:
             hotel, idx, p = booking["hotel"], r["idx"], r["p"]
             self.mu[hotel][idx] += p

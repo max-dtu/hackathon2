@@ -99,7 +99,7 @@ def plot_acceptance(table: pd.DataFrame):
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--model", default="segments", choices=MODEL_KINDS)
+    ap.add_argument("--model", default="combined", choices=MODEL_KINDS)
     ap.add_argument("--show", action="store_true")
     args = ap.parse_args()
     common.style()

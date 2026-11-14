@@ -16,7 +16,8 @@ from booking_model import FEATURES, MODEL_KINDS, StayModel, _clean
 from common import plt
 
 LABELS = {"segments": "Segment table", "tree": "Decision tree", "logistic": "Logistic regression",
-          "forest": "Random forest", "boosting": "Gradient boosting"}
+          "forest": "Random forest", "boosting": "Gradient boosting",
+          "combined": "Combined (table + boosting)"}
 
 
 def plot_roc(y, preds):
@@ -75,13 +76,13 @@ def main() -> None:
     y = 1 - test["cancelled"].to_numpy()                      # 1 = the guest stayed
     print(f"Train: {len(train):,} bookings arriving before {common.SPLIT}   "
           f"Test: {len(test):,} arriving after   ({y.mean():.1%} of test guests stayed)\n")
-    print(f"  {'model':<21}{'AUC':>7}{'accuracy':>10}{'log loss':>10}{'Brier':>8}{'avg predicted stay':>20}")
-    print(f"  {'always say stays':<21}{0.5:>7.3f}{max(y.mean(), 1 - y.mean()):>10.1%}")
+    print(f"  {'model':<29}{'AUC':>7}{'accuracy':>10}{'log loss':>10}{'Brier':>8}{'avg predicted stay':>20}")
+    print(f"  {'always say stays':<29}{0.5:>7.3f}{max(y.mean(), 1 - y.mean()):>10.1%}")
     preds, models = {}, {}
     for kind in MODEL_KINDS:
         models[kind] = StayModel(kind).fit(train)
         p = preds[kind] = models[kind].predict(test)
-        print(f"  {LABELS[kind]:<21}{roc_auc_score(y, p):>7.3f}{accuracy_score(y, p >= 0.5):>10.1%}"
+        print(f"  {LABELS[kind]:<29}{roc_auc_score(y, p):>7.3f}{accuracy_score(y, p >= 0.5):>10.1%}"
               f"{log_loss(y, p):>10.3f}{brier_score_loss(y, p):>8.3f}{p.mean():>20.1%}", flush=True)
     print("\n  AUC: 1.0 = perfect ranking, 0.5 = guessing. Log loss and Brier: lower is better.\n")
 
