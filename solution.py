@@ -105,9 +105,20 @@ class PickupForecast:
     weekday): of last year's bookings for that night, which were made closer to the night than
     'now' is, how many of those guests showed up, and what they paid per night."""
 
-    def __init__(self, history: pd.DataFrame, capacity: dict):
-        self.start, self.table = {}, {}
+    def __init__(self, history: pd.DataFrame, capacity: dict, commitments: pd.DataFrame = None):
+        self.start, self.table, self.growth = {}, {}, {}
         for h, cap in capacity.items():
+            # Booking pace: this period's bookings already on the books vs. last year's at the
+            # same point. 2016 ran well ahead of 2015, so copying last year 1:1 undershoots.
+            g = 1.0
+            if commitments is not None and len(commitments):
+                ly0 = cap.index[0] - pd.Timedelta(days=364)
+                ly1 = ly0 + pd.Timedelta(days=len(cap))
+                last = ((history.hotel == h) & (history.arrival_date >= ly0) &
+                        (history.arrival_date < ly1) & (history.booking_date < ly0)).sum()
+                if last > 0:
+                    g = float(np.clip((commitments.hotel == h).sum() / last, 0.5, 2.0))
+            self.growth[h] = g
             hist = history[history.hotel == h]
             n = hist.nights.to_numpy().astype(int)
             idx = np.repeat(np.arange(len(hist)), n)
@@ -132,13 +143,13 @@ class PickupForecast:
         leads, cum_show, cum_rev = self.table[h][key]
         k = np.searchsorted(leads, lead_days, side="left")  # booked closer to the night than now
         shows = float(cum_show[k])
-        return shows, (float(cum_rev[k]) / shows if shows else 0.0)
+        return shows * self.growth[h], (float(cum_rev[k]) / shows if shows else 0.0)
 
 
 class Solution:
     def __init__(self, commitments: pd.DataFrame, capacity: dict, history: pd.DataFrame = None,
                  p_shift: float = -0.4, walk_model: str = "cheapest", model: ShowUpModel = None,
-                 bid_scale: float = 1.0) -> None:
+                 bid_scale: float = 1.0, var_scale: float = 2.0) -> None:
         """history:    bookings with known outcomes. The judges' evaluate.py doesn't pass it, so we
                        read train.csv; simulate.py passes an earlier slice to replay past years.
         p_shift:    safety knob, added to every show-up probability on the log-odds scale.
@@ -147,7 +158,10 @@ class Solution:
                     "simple"   = assume this guest is the one walked (2.5 x own value).
         model:      a pre-trained ShowUpModel, so parameter sweeps don't retrain.
         bid_scale:  weight on the bid price (room held back for later, better-paying guests);
-                    0 = first-come first-served."""
+                    0 = first-come first-served.
+        var_scale:  widens the uncertainty of each night's head count. Cancellations are not
+                    independent (a group cancels together), so occupancy swings more than
+                    independent coin flips suggest."""
         if history is None:
             history = pd.read_csv(Path(__file__).with_name("train.csv"),
                                   parse_dates=["arrival_date", "booking_date"])
@@ -155,8 +169,8 @@ class Solution:
         if model is None:
             model = ShowUpModel(history)
         self.model, self.p_shift, self.walk_model = model, p_shift, walk_model
-        self.bid_scale = bid_scale
-        self.pickup = PickupForecast(history, capacity) if bid_scale else None
+        self.bid_scale, self.var_scale = bid_scale, var_scale
+        self.pickup = PickupForecast(history, capacity, commitments) if bid_scale else None
         # One-row predictions are ~30x faster single-threaded (thread start-up dominates).
         threadpool_limits(1, user_api="openmp")
 
@@ -184,7 +198,7 @@ class Solution:
     def _add(self, b, p):
         h, lo, s = self._span(b)
         self.mu[h][s] += p
-        self.var[h][s] += p * (1 - p)
+        self.var[h][s] += p * (1 - p) * self.var_scale
         if 0 <= lo < len(self.cap[h]):
             bisect.insort(self.arrivals[h][lo], (b["nightly_rate"] * b["nights"], p))
 
