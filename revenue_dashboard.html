@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2017 Hotel Revenue Management — Performance Dashboard</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+    }
+    .tab-btn {
+      transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+    }
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: var(--primary-foreground, #ffffff);
+      border-color: var(--primary);
+    }
+    .svg-bar {
+      transition: opacity 150ms ease, filter 150ms ease;
+      cursor: pointer;
+    }
+    .svg-bar:hover {
+      opacity: 0.85;
+    }
+    #tooltip {
+      pointer-events: none;
+      position: fixed;
+      z-index: 50;
+      opacity: 0;
+      transition: opacity 100ms ease;
+      background-color: var(--card);
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased p-4 md:p-6 lg:p-8">
+  <div id="tooltip" class="rounded-lg px-3 py-2 text-xs"></div>
+
+  <div class="max-w-6xl mx-auto space-y-6">
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[var(--border)] pb-4">
+      <div>
+        <div class="inline-flex items-center gap-2 text-xs font-medium px-2.5 py-1 rounded-full bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)] mb-2">
+          <span class="w-2 h-2 rounded-full" style="background-color: var(--success);"></span>
+          Official 2017 Hold-Out Evaluation (test.csv &amp; evaluate.py)
+        </div>
+        <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Hotel Revenue Management Performance</h1>
+        <p class="text-sm text-[var(--muted-foreground)] mt-1">
+          26,439 incoming booking requests + 14,104 existing commitments across Downtown (124 rooms) &amp; Seaside (103 rooms)
+        </p>
+      </div>
+      <div class="text-xs text-[var(--muted-foreground)] md:text-right">
+        <div>Walk Penalty: <span class="font-semibold text-[var(--foreground)]">2.5× ADR</span></div>
+        <div>Runtime: <span class="font-semibold text-[var(--foreground)]">56.93s</span></div>
+      </div>
+    </header>
+
+    <!-- KPI Strip -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="rounded-xl bg-[var(--card)] border border-[var(--border)] p-4">
+        <div class="text-xs font-medium text-[var(--muted-foreground)]">Net Revenue (Solution)</div>
+        <div class="text-2xl font-bold mt-1" style="color: var(--success);">€5,560,407</div>
+        <div class="text-xs text-[var(--muted-foreground)] mt-1">
+          +€3,119,371 (+127.8%) vs. RejectAll
+        </div>
+      </div>
+
+      <div class="rounded-xl bg-[var(--card)] border border-[var(--border)] p-4">
+        <div class="text-xs font-medium text-[var(--muted-foreground)]">Gross Revenue vs. Penalties</div>
+        <div class="text-2xl font-bold mt-1">€6,001,460</div>
+        <div class="text-xs text-[var(--muted-foreground)] mt-1">
+          Walk penalties: <span class="font-medium" style="color: var(--error);">€441,052</span> (7.3% of gross)
+        </div>
+      </div>
+
+      <div class="rounded-xl bg-[var(--card)] border border-[var(--border)] p-4">
+        <div class="text-xs font-medium text-[var(--muted-foreground)]">Request Acceptance</div>
+        <div class="text-2xl font-bold mt-1">43.2%</div>
+        <div class="text-xs text-[var(--muted-foreground)] mt-1">
+          11,416 accepted / 15,023 rejected (of 26,439)
+        </div>
+      </div>
+
+      <div class="rounded-xl bg-[var(--card)] border border-[var(--border)] p-4">
+        <div class="text-xs font-medium text-[var(--muted-foreground)]">Guest Seating &amp; Occupancy</div>
+        <div class="text-2xl font-bold mt-1">92.95% Seated</div>
+        <div class="text-xs text-[var(--muted-foreground)] mt-1">
+          14,720 seated / 1,116 walked (7.05%) · 62.3% yr occ
+        </div>
+      </div>
+    </section>
+
+    <!-- Row 1: Policy Comparison + Monthly Trends -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Policy Comparison -->
+      <div class="lg:col-span-5 rounded-xl bg-[var(--card)] border border-[var(--border)] p-5 flex flex-col">
+        <div class="flex items-start justify-between gap-2 mb-4">
+          <div>
+            <h2 class="text-base font-semibold">Policy Benchmark Comparison</h2>
+            <p class="text-xs text-[var(--muted-foreground)]">Net revenue, gross revenue, and walk penalties (€M)</p>
+          </div>
+          <select id="policyMetric" class="text-xs rounded-lg px-2.5 py-1.5 bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)]">
+            <option value="net">Net Revenue</option>
+            <option value="breakdown">Gross vs. Penalty</option>
+            <option value="walk">Walk Rate (%)</option>
+          </select>
+        </div>
+        <div id="policyChartContainer" class="flex-1 flex items-center justify-center min-h-[260px]"></div>
+        <div class="mt-3 pt-3 border-t border-[var(--border)] text-xs text-[var(--muted-foreground)] flex justify-between">
+          <span>RejectNonRefund net: <strong class="text-[var(--foreground)]">-€2,007,279</strong></span>
+          <span>AcceptAll penalty: <strong style="color: var(--error);">€8.44M</strong></span>
+        </div>
+      </div>
+
+      <!-- Monthly 2017 Trends -->
+      <div class="lg:col-span-7 rounded-xl bg-[var(--card)] border border-[var(--border)] p-5 flex flex-col">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <h2 class="text-base font-semibold">Monthly 2017 Performance (Solution)</h2>
+            <p class="text-xs text-[var(--muted-foreground)]">test.csv arrivals span Jan–Aug 2017 (Sep includes carry-over occupancy)</p>
+          </div>
+          <div class="inline-flex rounded-lg border border-[var(--border)] p-0.5 bg-[var(--background)]">
+            <button type="button" class="tab-btn active text-xs px-2.5 py-1 rounded-md font-medium" data-monthly="financial">€ Revenue &amp; Net</button>
+            <button type="button" class="tab-btn text-xs px-2.5 py-1 rounded-md font-medium text-[var(--muted-foreground)]" data-monthly="requests">Accept vs. Reject</button>
+            <button type="button" class="tab-btn text-xs px-2.5 py-1 rounded-md font-medium text-[var(--muted-foreground)]" data-monthly="occupancy">Hotel Occupancy %</button>
+          </div>
+        </div>
+        <div id="monthlyChartContainer" class="flex-1 min-h-[260px]"></div>
+        <div id="monthlyLegend" class="mt-3 pt-3 border-t border-[var(--border)] flex flex-wrap gap-4 text-xs text-[var(--muted-foreground)]"></div>
+      </div>
+    </section>
+
+    <!-- Row 2: Selectivity & ML Quality + Hotel Breakdown -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Selectivity & ML Quality -->
+      <div class="lg:col-span-6 rounded-xl bg-[var(--card)] border border-[var(--border)] p-5 space-y-4">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <h2 class="text-base font-semibold">Selectivity &amp; Show-Model Quality</h2>
+            <p class="text-xs text-[var(--muted-foreground)]">How the ensemble separates high-value, reliable bookings from risky ones</p>
+          </div>
+          <div class="text-right text-xs">
+            <div class="font-semibold" style="color: var(--primary);">AUC 0.8642 (Requests)</div>
+            <div class="text-[var(--muted-foreground)]">0.8897 (All 2017)</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
+            <div class="text-xs text-[var(--muted-foreground)]">Mean Nightly Rate</div>
+            <div class="mt-2 flex items-baseline justify-between">
+              <span class="text-xs text-[var(--muted-foreground)]">Accepted</span>
+              <span class="text-sm font-bold" style="color: var(--success);">€138.08</span>
+            </div>
+            <div class="mt-1 flex items-baseline justify-between">
+              <span class="text-xs text-[var(--muted-foreground)]">Rejected</span>
+              <span class="text-sm font-semibold text-[var(--muted-foreground)]">€113.45</span>
+            </div>
+            <div class="mt-2 text-xs font-medium" style="color: var(--success);">+21.7% ADR</div>
+          </div>
+
+          <div class="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
+            <div class="text-xs text-[var(--muted-foreground)]">Actual Show Rate</div>
+            <div class="mt-2 flex items-baseline justify-between">
+              <span class="text-xs text-[var(--muted-foreground)]">Accepted</span>
+              <span class="text-sm font-bold" style="color: var(--success);">79.5%</span>
+            </div>
+            <div class="mt-1 flex items-baseline justify-between">
+              <span class="text-xs text-[var(--muted-foreground)]">Rejected</span>
+              <span class="text-sm font-semibold text-[var(--muted-foreground)]">59.7%</span>
+            </div>
+            <div class="mt-2 text-xs font-medium" style="color: var(--success);">+19.8 pp reliability</div>
+          </div>
+
+          <div class="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
+            <div class="text-xs text-[var(--muted-foreground)]">Mean Stay Length</div>
+            <div class="mt-2 flex items-baseline justify-between">
+              <span class="text-xs text-[var(--muted-foreground)]">Accepted</span>
+              <span class="text-sm font-bold" style="color: var(--primary);">2.82 nights</span>
+            </div>
+            <div class="mt-1 flex items-baseline justify-between">
+              <span class="text-xs text-[var(--muted-foreground)]">Rejected</span>
+              <span class="text-sm font-semibold text-[var(--muted-foreground)]">3.72 nights</span>
+            </div>
+            <div class="mt-2 text-xs text-[var(--muted-foreground)]">Mean value €433 vs €434</div>
+          </div>
+        </div>
+
+        <!-- Calibration & Show-Rate Comparison Bars -->
+        <div class="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3.5 space-y-2.5">
+          <div class="text-xs font-medium">Show-Up Rate Across Cohorts &amp; Model Calibration</div>
+          <div class="space-y-2 text-xs">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>Accepted Requests (Actual Show Rate)</span>
+                <span class="font-semibold">79.5%</span>
+              </div>
+              <div class="h-2 rounded-full bg-[var(--card)] overflow-hidden">
+                <div class="h-full rounded-full" style="width: 79.5%; background-color: var(--success);"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>All Requests — Predicted vs. Actual</span>
+                <span class="font-semibold">70.3% pred / 68.3% actual</span>
+              </div>
+              <div class="h-2 rounded-full bg-[var(--card)] overflow-hidden relative">
+                <div class="h-full rounded-full" style="width: 68.3%; background-color: var(--chart-1);"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>Rejected Requests (Actual Show Rate)</span>
+                <span class="font-semibold">59.7%</span>
+              </div>
+              <div class="h-2 rounded-full bg-[var(--card)] overflow-hidden">
+                <div class="h-full rounded-full" style="width: 59.7%; background-color: var(--warning);"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>Pre-Existing Commitments (14,104 bookings)</span>
+                <span class="font-semibold">47.9%</span>
+              </div>
+              <div class="h-2 rounded-full bg-[var(--card)] overflow-hidden">
+                <div class="h-full rounded-full" style="width: 47.9%; background-color: var(--muted-foreground);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel Breakdown -->
+      <div class="lg:col-span-6 rounded-xl bg-[var(--card)] border border-[var(--border)] p-5 space-y-4">
+        <div>
+          <h2 class="text-base font-semibold">Hotel-Level Breakdown (2017 Hold-Out)</h2>
+          <p class="text-xs text-[var(--muted-foreground)]">Comparison of Solution vs. RejectAll and AcceptAll by property</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Downtown Hotel -->
+          <div class="rounded-lg bg-[var(--background)] border border-[var(--border)] p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-semibold text-sm">Downtown Hotel</div>
+                <div class="text-xs text-[var(--muted-foreground)]">124 rooms · 45,008 yr room-nights</div>
+              </div>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)]" style="color: var(--chart-1);">57.7% of Net</span>
+            </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Net Revenue</span><span class="font-bold" style="color: var(--success);">€3,210,048</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Gross Revenue</span><span class="font-medium">€3,516,267</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Walk Penalties</span><span class="font-medium" style="color: var(--error);">€306,219</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Accepted</span><span class="font-medium">7,413 / 17,476 (42.4%)</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Seated / Walked</span><span class="font-medium">9,459 / 705</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Full-Yr Occupancy</span><span class="font-medium">28,070 / 45,008 (62.4%)</span></div>
+            </div>
+            <div class="pt-2 border-t border-[var(--border)] text-xs text-[var(--muted-foreground)]">
+              Baselines: RejectAll <strong class="text-[var(--foreground)]">€1.35M</strong> · AcceptAll <strong style="color: var(--error);">-€1.13M</strong>
+            </div>
+          </div>
+
+          <!-- Seaside Hotel -->
+          <div class="rounded-lg bg-[var(--background)] border border-[var(--border)] p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-semibold text-sm">Seaside Hotel</div>
+                <div class="text-xs text-[var(--muted-foreground)]">103 rooms · 37,335 yr room-nights</div>
+              </div>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)]" style="color: var(--chart-2);">42.3% of Net</span>
+            </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Net Revenue</span><span class="font-bold" style="color: var(--success);">€2,350,359</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Gross Revenue</span><span class="font-medium">€2,485,192</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Walk Penalties</span><span class="font-medium" style="color: var(--error);">€134,833</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Accepted</span><span class="font-medium">4,003 / 8,963 (44.7%)</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Seated / Walked</span><span class="font-medium">5,261 / 411</span></div>
+              <div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Full-Yr Occupancy</span><span class="font-medium">23,206 / 37,335 (62.2%)</span></div>
+            </div>
+            <div class="pt-2 border-t border-[var(--border)] text-xs text-[var(--muted-foreground)]">
+              Baselines: RejectAll <strong class="text-[var(--foreground)]">€1.09M</strong> · AcceptAll <strong style="color: var(--error);">-€0.88M</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compact Summary Note -->
+        <div class="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3 text-xs text-[var(--muted-foreground)]">
+          <strong class="text-[var(--foreground)]">Why RejectAll &amp; AcceptAll lose:</strong>
+          RejectAll leaves 65.7% of annual room-nights empty (34.3% occupancy) yet still suffers 308 walks from existing commitments.
+          AcceptAll pushes occupancy only slightly higher (66.0%) while triggering 12,995 walks (52.4% walk rate) and €8.44M in penalties.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const DATA = {
+      policies: [
+        { name: "Solution", net: 5560407.18, rev: 6001459.63, pen: 441052.45, walkPct: 7.05, occPct: 62.3, color: "var(--success)" },
+        { name: "RejectAll", net: 2441035.87, rev: 2609667.59, pen: 168631.72, walkPct: 4.55, occPct: 34.3, color: "var(--chart-1)" },
+        { name: "AcceptAll", net: -2008558.65, rev: 6434171.58, pen: 8442730.23, walkPct: 52.38, occPct: 66.0, color: "var(--error)" },
+        { name: "RejectNonRefund", net: -2007279.00, rev: null, pen: null, walkPct: null, occPct: null, color: "var(--warning)" }
+      ],
+      months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+      rev: [446371, 485959, 511739, 704767, 778634, 819432, 1063052, 1191505, 0],
+      pen: [92377, 41241, 47330, 31711, 64567, 91385, 48523, 23919, 0],
+      net: [353994, 444719, 464409, 673056, 714067, 728048, 1014529, 1167585, 0],
+      acc: [1222, 1587, 1130, 1034, 1460, 1285, 1695, 2003, 0],
+      rej: [222, 1133, 2012, 2416, 2489, 2426, 2143, 2182, 0],
+      occDt: [90.5, 91.9, 90.8, 92.0, 96.1, 97.2, 97.1, 92.1, 3.6],
+      occSs: [85.1, 93.8, 97.1, 91.7, 94.0, 93.7, 92.6, 90.8, 10.2]
+    };
+
+    const tooltip = document.getElementById("tooltip");
+    function showTip(evt, html) {
+      tooltip.innerHTML = html;
+      tooltip.style.opacity = "1";
+      const pad = 12;
+      let x = evt.clientX + pad;
+      let y = evt.clientY + pad;
+      const rect = tooltip.getBoundingClientRect();
+      if (x + rect.width > window.innerWidth - 8) x = evt.clientX - rect.width - pad;
+      if (y + rect.height > window.innerHeight - 8) y = evt.clientY - rect.height - pad;
+      tooltip.style.left = x + "px";
+      tooltip.style.top = y + "px";
+    }
+    function hideTip() {
+      tooltip.style.opacity = "0";
+    }
+    function fmtEur(v) {
+      if (v === null || v === undefined) return "N/A";
+      const sign = v < 0 ? "-" : "";
+      return sign + "€" + Math.round(Math.abs(v)).toLocaleString("en-US");
+    }
+
+    // 1. Policy Chart
+    function renderPolicyChart(mode) {
+      const container = document.getElementById("policyChartContainer");
+      const w = 440, h = 250;
+      const ml = 56, mr = 18, mt = 18, mb = 36;
+      const pw = w - ml - mr, ph = h - mt - mb;
+
+      let svg = `<svg viewBox="0 0 ${w} ${h}" class="w-full h-auto" role="img" aria-label="Policy Comparison Chart">`;
+
+      if (mode === "net") {
+        const minV = -2500000, maxV = 6200000;
+        const yScale = v => mt + ((maxV - v) / (maxV - minV)) * ph;
+        const y0 = yScale(0);
+
+        [-2000000, 0, 2000000, 4000000, 6000000].forEach(tick => {
+          const y = yScale(tick);
+          svg += `<line x1="${ml}" y1="${y}" x2="${w - mr}" y2="${y}" stroke="var(--border)" stroke-dasharray="${tick === 0 ? "0" : "3,3"}" stroke-width="${tick === 0 ? 1.5 : 1}"/>`;
+          svg += `<text x="${ml - 8}" y="${y + 4}" text-anchor="end" fill="var(--muted-foreground)" font-size="11">${tick === 0 ? "€0" : (tick / 1e6).toFixed(0) + "M"}</text>`;
+        });
+
+        const bw = pw / DATA.policies.length;
+        DATA.policies.forEach((p, i) => {
+          const x = ml + i * bw + bw * 0.2;
+          const barW = bw * 0.6;
+          const yVal = yScale(p.net);
+          const rectY = p.net >= 0 ? yVal : y0;
+          const rectH = Math.max(2, Math.abs(yVal - y0));
+          svg += `<rect class="svg-bar" data-idx="${i}" x="${x}" y="${rectY}" width="${barW}" height="${rectH}" rx="4" fill="${p.color}"/>`;
+          const labelY = p.net >= 0 ? rectY - 5 : rectY + rectH + 12;
+          svg += `<text x="${x + barW / 2}" y="${labelY}" text-anchor="middle" fill="var(--foreground)" font-size="11" font-weight="600">${(p.net / 1e6).toFixed(2)}M</text>`;
+          svg += `<text x="${x + barW / 2}" y="${h - 10}" text-anchor="middle" fill="var(--muted-foreground)" font-size="11">${p.name === "RejectNonRefund" ? "RejNonRef" : p.name}</text>`;
+        });
+      } else if (mode === "breakdown") {
+        const subset = DATA.policies.slice(0, 3);
+        const maxV = 9000000;
+        const yScale = v => mt + ((maxV - v) / maxV) * ph;
+        [0, 3000000, 6000000, 9000000].forEach(tick => {
+          const y = yScale(tick);
+          svg += `<line x1="${ml}" y1="${y}" x2="${w - mr}" y2="${y}" stroke="var(--border)" stroke-dasharray="${tick === 0 ? "0" : "3,3"}"/>`;
+          svg += `<text x="${ml - 8}" y="${y + 4}" text-anchor="end" fill="var(--muted-foreground)" font-size="11">€${(tick / 1e6).toFixed(0)}M</text>`;
+        });
+
+        const gw = pw / subset.length;
+        subset.forEach((p, i) => {
+          const gx = ml + i * gw + gw * 0.18;
+          const subW = gw * 0.28;
+          const yRev = yScale(p.rev), yPen = yScale(p.pen), y0 = yScale(0);
+          svg += `<rect class="svg-bar" data-idx="${i}" x="${gx}" y="${yRev}" width="${subW}" height="${y0 - yRev}" rx="3" fill="var(--chart-1)"/>`;
+          svg += `<rect class="svg-bar" data-idx="${i}" x="${gx + subW + 4}" y="${yPen}" width="${subW}" height="${y0 - yPen}" rx="3" fill="var(--error)"/>`;
+          svg += `<text x="${gx + subW + 2}" y="${h - 10}" text-anchor="middle" fill="var(--muted-foreground)" font-size="11">${p.name}</text>`;
+        });
+      } else {
+        const subset = DATA.policies.slice(0, 3);
+        const maxV = 60;
+        const yScale = v => mt + ((maxV - v) / maxV) * ph;
+        [0, 15, 30, 45, 60].forEach(tick => {
+          const y = yScale(tick);
+          svg += `<line x1="${ml}" y1="${y}" x2="${w - mr}" y2="${y}" stroke="var(--border)" stroke-dasharray="${tick === 0 ? "0" : "3,3"}"/>`;
+          svg += `<text x="${ml - 8}" y="${y + 4}" text-anchor="end" fill="var(--muted-foreground)" font-size="11">${tick}%</text>`;
+        });
+
+        const bw = pw / subset.length;
+        subset.forEach((p, i) => {
+          const x = ml + i * bw + bw * 0.25;
+          const barW = bw * 0.5;
+          const yVal = yScale(p.walkPct), y0 = yScale(0);
+          svg += `<rect class="svg-bar" data-idx="${i}" x="${x}" y="${yVal}" width="${barW}" height="${y0 - yVal}" rx="4" fill="${p.color}"/>`;
+          svg += `<text x="${x + barW / 2}" y="${yVal - 5}" text-anchor="middle" fill="var(--foreground)" font-size="11" font-weight="600">${p.walkPct.toFixed(2)}%</text>`;
+          svg += `<text x="${x + barW / 2}" y="${h - 10}" text-anchor="middle" fill="var(--muted-foreground)" font-size="11">${p.name}</text>`;
+        });
+      }
+
+      svg += `</svg>`;
+      container.innerHTML = svg;
+
+      container.querySelectorAll(".svg-bar").forEach(el => {
+        el.addEventListener("mousemove", e => {
+          const p = DATA.policies[Number(el.dataset.idx)];
+          showTip(e, `
+            <div class="font-semibold mb-1">${p.name}</div>
+            <div>Net: <strong>${fmtEur(p.net)}</strong></div>
+            ${p.rev !== null ? `<div>Gross: ${fmtEur(p.rev)}</div><div>Walk Penalty: ${fmtEur(p.pen)}</div><div>Walk Rate: ${p.walkPct}% · Occ: ${p.occPct}%</div>` : `<div class="text-[var(--muted-foreground)]">Baseline rule</div>`}
+          `);
+        });
+        el.addEventListener("mouseleave", hideTip);
+      });
+    }
+
+    // 2. Monthly Chart
+    let currentMonthlyTab = "financial";
+    function renderMonthlyChart(tab) {
+      currentMonthlyTab = tab;
+      const container = document.getElementById("monthlyChartContainer");
+      const legend = document.getElementById("monthlyLegend");
+      const w = 620, h = 250;
+      const ml = 54, mr = 16, mt = 18, mb = 32;
+      const pw = w - ml - mr, ph = h - mt - mb;
+
+      let svg = `<svg viewBox="0 0 ${w} ${h}" class="w-full h-auto" role="img" aria-label="Monthly 2017 Chart">`;
+
+      if (tab === "financial") {
+        const months = DATA.months.slice(0, 8);
+        const maxV = 1300000;
+        const yScale = v => mt + ((maxV - v) / maxV) * ph;
+        [0, 300000, 600000, 900000, 1200000].forEach(t => {
+          const y = yScale(t);
+          svg += `<line x1="${ml}" y1="${y}" x2="${w - mr}" y2="${y}" stroke="var(--border)" stroke-dasharray="${t === 0 ? "0" : "3,3"}"/>`;
+          svg += `<text x="${ml - 8}" y="${y + 4}" text-anchor="end" fill="var(--muted-foreground)" font-size="11">${t === 0 ? "€0" : "€" + (t / 1e6).toFixed(1) + "M"}</text>`;
+        });
+
+        const gw = pw / months.length;
+        months.forEach((m, i) => {
+          const gx = ml + i * gw + gw * 0.14;
+          const bw = gw * 0.22;
+          const y0 = yScale(0);
+          const yRev = yScale(DATA.rev[i]);
+          const yNet = yScale(DATA.net[i]);
+          const yPen = yScale(DATA.pen[i]);
+          svg += `<rect class="svg-bar" data-m="${i}" x="${gx}" y="${yRev}" width="${bw}" height="${y0 - yRev}" rx="2" fill="var(--chart-1)"/>`;
+          svg += `<rect class="svg-bar" data-m="${i}" x="${gx + bw + 2}" y="${yNet}" width="${bw}" height="${y0 - yNet}" rx="2" fill="var(--success)"/>`;
+          svg += `<rect class="svg-bar" data-m="${i}" x="${gx + (bw + 2) * 2}" y="${yPen}" width="${bw}" height="${y0 - yPen}" rx="2" fill="var(--error)"/>`;
+          svg += `<text x="${ml + i * gw + gw / 2}" y="${h - 10}" text-anchor="middle" fill="var(--muted-foreground)" font-size="11">${m}</text>`;
+        });
+
+        legend.innerHTML = `
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm" style="background:var(--chart-1)"></span>Gross Revenue</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm" style="background:var(--success)"></span>Net Revenue</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm" style="background:var(--error)"></span>Walk Penalty</span>
+        `;
+      } else if (tab === "requests") {
+        const months = DATA.months.slice(0, 8);
+        const maxV = 4200;
+        const yScale = v => mt + ((maxV - v) / maxV) * ph;
+        [0, 1000, 2000, 3000, 4000].forEach(t => {
+          const y = yScale(t);
+          svg += `<line x1="${ml}" y1="${y}" x2="${w - mr}" y2="${y}" stroke="var(--border)" stroke-dasharray="${t === 0 ? "0" : "3,3"}"/>`;
+          svg += `<text x="${ml - 8}" y="${y + 4}" text-anchor="end" fill="var(--muted-foreground)" font-size="11">${t.toLocaleString()}</text>`;
+        });
+
+        const gw = pw / months.length;
+        months.forEach((m, i) => {
+          const x = ml + i * gw + gw * 0.22;
+          const bw = gw * 0.56;
+          const y0 = yScale(0);
+          const yAcc = yScale(DATA.acc[i]);
+          const yTot = yScale(DATA.acc[i] + DATA.rej[i]);
+          svg += `<rect class="svg-bar" data-m="${i}" x="${x}" y="${yAcc}" width="${bw}" height="${y0 - yAcc}" fill="var(--success)"/>`;
+          svg += `<rect class="svg-bar" data-m="${i}" x="${x}" y="${yTot}" width="${bw}" height="${yAcc - yTot}" rx="2" fill="var(--muted-foreground)" opacity="0.45"/>`;
+          svg += `<text x="${x + bw / 2}" y="${h - 10}" text-anchor="middle" fill="var(--muted-foreground)" font-size="11">${m}</text>`;
+        });
+
+        legend.innerHTML = `
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm" style="background:var(--success)"></span>Accepted Requests (11,416)</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm opacity-50" style="background:var(--muted-foreground)"></span>Rejected Requests (15,023)</span>
+        `;
+      } else {
+        const months = DATA.months;
+        const maxV = 100;
+        const yScale = v => mt + ((maxV - v) / maxV) * ph;
+        [0, 25, 50, 75, 100].forEach(t => {
+          const y = yScale(t);
+          svg += `<line x1="${ml}" y1="${y}" x2="${w - mr}" y2="${y}" stroke="var(--border)" stroke-dasharray="${t === 0 ? "0" : "3,3"}"/>`;
+          svg += `<text x="${ml - 8}" y="${y + 4}" text-anchor="end" fill="var(--muted-foreground)" font-size="11">${t}%</text>`;
+        });
+
+        const step = pw / months.length;
+        const ptsDt = months.map((_, i) => `${ml + i * step + step / 2},${yScale(DATA.occDt[i])}`).join(" ");
+        const ptsSs = months.map((_, i) => `${ml + i * step + step / 2},${yScale(DATA.occSs[i])}`).join(" ");
+        svg += `<polyline fill="none" stroke="var(--chart-1)" stroke-width="2.5" points="${ptsDt}"/>`;
+        svg += `<polyline fill="none" stroke="var(--chart-2)" stroke-width="2.5" points="${ptsSs}"/>`;
+
+        months.forEach((m, i) => {
+          const cx = ml + i * step + step / 2;
+          svg += `<circle class="svg-bar" data-m="${i}" cx="${cx}" cy="${yScale(DATA.occDt[i])}" r="4.5" fill="var(--chart-1)"/>`;
+          svg += `<circle class="svg-bar" data-m="${i}" cx="${cx}" cy="${yScale(DATA.occSs[i])}" r="4.5" fill="var(--chart-2)"/>`;
+          svg += `<text x="${cx}" y="${h - 10}" text-anchor="middle" fill="var(--muted-foreground)" font-size="11">${m}</text>`;
+        });
+
+        legend.innerHTML = `
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--chart-1)"></span>Downtown Hotel (90.5%–97.2% Jan–Aug)</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--chart-2)"></span>Seaside Hotel (85.1%–97.1% Jan–Aug)</span>
+        `;
+      }
+
+      svg += `</svg>`;
+      container.innerHTML = svg;
+
+      container.querySelectorAll(".svg-bar").forEach(el => {
+        el.addEventListener("mousemove", e => {
+          const i = Number(el.dataset.m);
+          const m = DATA.months[i];
+          if (tab === "financial") {
+            showTip(e, `
+              <div class="font-semibold mb-1">${m} 2017</div>
+              <div>Gross: <strong>${fmtEur(DATA.rev[i])}</strong></div>
+              <div>Penalty: <strong style="color:var(--error)">${fmtEur(DATA.pen[i])}</strong></div>
+              <div>Net: <strong style="color:var(--success)">${fmtEur(DATA.net[i])}</strong></div>
+            `);
+          } else if (tab === "requests") {
+            const tot = DATA.acc[i] + DATA.rej[i];
+            const pct = ((DATA.acc[i] / tot) * 100).toFixed(1);
+            showTip(e, `
+              <div class="font-semibold mb-1">${m} 2017 (${tot.toLocaleString()} requests)</div>
+              <div>Accepted: <strong style="color:var(--success)">${DATA.acc[i].toLocaleString()} (${pct}%)</strong></div>
+              <div>Rejected: <strong>${DATA.rej[i].toLocaleString()}</strong></div>
+            `);
+          } else {
+            showTip(e, `
+              <div class="font-semibold mb-1">${m} 2017 Occupancy</div>
+              <div>Downtown: <strong>${DATA.occDt[i]}%</strong></div>
+              <div>Seaside: <strong>${DATA.occSs[i]}%</strong></div>
+            `);
+          }
+        });
+        el.addEventListener("mouseleave", hideTip);
+      });
+    }
+
+    document.getElementById("policyMetric").addEventListener("change", e => renderPolicyChart(e.target.value));
+    document.querySelectorAll("[data-monthly]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("[data-monthly]").forEach(b => {
+          b.classList.remove("active");
+          b.classList.add("text-[var(--muted-foreground)]");
+        });
+        btn.classList.add("active");
+        btn.classList.remove("text-[var(--muted-foreground)]");
+        renderMonthlyChart(btn.dataset.monthly);
+      });
+    });
+
+    renderPolicyChart("net");
+    renderMonthlyChart("financial");
+
+    // Fallback theme tokens when opened directly outside Antigravity
+    if (!getComputedStyle(document.documentElement).getPropertyValue("--background").trim()) {
+      const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const tokens = dark
+        ? { "--background": "#0f172a", "--card": "#1e293b", "--border": "#334155", "--foreground": "#f8fafc", "--muted-foreground": "#94a3b8", "--primary": "#3b82f6", "--success": "#22c55e", "--error": "#ef4444", "--warning": "#f59e0b", "--chart-1": "#38bdf8", "--chart-2": "#a78bfa" }
+        : { "--background": "#f8fafc", "--card": "#ffffff", "--border": "#e2e8f0", "--foreground": "#0f172a", "--muted-foreground": "#64748b", "--primary": "#2563eb", "--success": "#16a34a", "--error": "#dc2626", "--warning": "#d97706", "--chart-1": "#0284c7", "--chart-2": "#7c3aed" };
+      Object.entries(tokens).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+    }
+  </script>
+</body>
+</html>

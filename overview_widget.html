@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif; }
+  </style>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-0 m-0">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-1">
+    <!-- Left: Policy Comparison -->
+    <div class="rounded-lg bg-[var(--card)] border border-[var(--border)] p-3.5">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold">2017 Policy Net Revenue</span>
+        <span class="text-xs font-bold" style="color: var(--success);">€5,560,407</span>
+      </div>
+      <div class="space-y-2 text-xs">
+        <div>
+          <div class="flex justify-between mb-0.5">
+            <span class="font-medium">Solution</span>
+            <span class="font-semibold" style="color: var(--success);">+€5.56M</span>
+          </div>
+          <div class="h-2 rounded-full bg-[var(--background)] overflow-hidden">
+            <div class="h-full rounded-full" style="width: 100%; background: var(--success);"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-0.5">
+            <span class="text-[var(--muted-foreground)]">RejectAll</span>
+            <span class="font-medium">+€2.44M</span>
+          </div>
+          <div class="h-2 rounded-full bg-[var(--background)] overflow-hidden">
+            <div class="h-full rounded-full" style="width: 43.9%; background: var(--chart-1);"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-0.5">
+            <span class="text-[var(--muted-foreground)]">RejectNonRefund</span>
+            <span class="font-medium" style="color: var(--error);">-€2.01M</span>
+          </div>
+          <div class="h-2 rounded-full bg-[var(--background)] overflow-hidden">
+            <div class="h-full rounded-full" style="width: 36.1%; background: var(--warning);"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-0.5">
+            <span class="text-[var(--muted-foreground)]">AcceptAll</span>
+            <span class="font-medium" style="color: var(--error);">-€2.01M</span>
+          </div>
+          <div class="h-2 rounded-full bg-[var(--background)] overflow-hidden">
+            <div class="h-full rounded-full" style="width: 36.1%; background: var(--error);"></div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2.5 pt-2 border-t border-[var(--border)] flex justify-between text-xs text-[var(--muted-foreground)]">
+        <span>Accepted: <strong class="text-[var(--foreground)]">43.2%</strong></span>
+        <span>Seated: <strong class="text-[var(--foreground)]">92.95%</strong></span>
+        <span>AUC: <strong class="text-[var(--foreground)]">0.864</strong></span>
+      </div>
+    </div>
+
+    <!-- Right: Monthly Net Revenue Jan-Aug -->
+    <div class="rounded-lg bg-[var(--card)] border border-[var(--border)] p-3.5 flex flex-col justify-between">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold">Monthly Net Revenue (Jan–Aug 2017)</span>
+        <span class="text-xs text-[var(--muted-foreground)]">Peak: €1.17M</span>
+      </div>
+      <svg viewBox="0 0 320 128" class="w-full h-auto" role="img" aria-label="Monthly Net Revenue Jan to Aug 2017">
+        <line x1="28" y1="12" x2="312" y2="12" stroke="var(--border)" stroke-dasharray="2,2"/>
+        <line x1="28" y1="58" x2="312" y2="58" stroke="var(--border)" stroke-dasharray="2,2"/>
+        <line x1="28" y1="104" x2="312" y2="104" stroke="var(--border)"/>
+        <text x="24" y="16" text-anchor="end" fill="var(--muted-foreground)" font-size="10">1.2M</text>
+        <text x="24" y="62" text-anchor="end" fill="var(--muted-foreground)" font-size="10">0.6M</text>
+        <text x="24" y="108" text-anchor="end" fill="var(--muted-foreground)" font-size="10">0</text>
+        <!-- Bars for [353994, 444719, 464409, 673056, 714067, 728048, 1014529, 1167585] -->
+        <rect x="36" y="76.9" width="22" height="27.1" rx="2" fill="var(--chart-1)"/>
+        <rect x="71" y="69.9" width="22" height="34.1" rx="2" fill="var(--chart-1)"/>
+        <rect x="106" y="68.4" width="22" height="35.6" rx="2" fill="var(--chart-1)"/>
+        <rect x="141" y="52.4" width="22" height="51.6" rx="2" fill="var(--chart-1)"/>
+        <rect x="176" y="49.3" width="22" height="54.7" rx="2" fill="var(--chart-1)"/>
+        <rect x="211" y="48.2" width="22" height="55.8" rx="2" fill="var(--chart-1)"/>
+        <rect x="246" y="26.2" width="22" height="77.8" rx="2" fill="var(--success)"/>
+        <rect x="281" y="14.5" width="22" height="89.5" rx="2" fill="var(--success)"/>
+        <text x="47" y="120" text-anchor="middle" fill="var(--muted-foreground)" font-size="10">Jan</text>
+        <text x="82" y="120" text-anchor="middle" fill="var(--muted-foreground)" font-size="10">Feb</text>
+        <text x="117" y="120" text-anchor="middle" fill="var(--muted-foreground)" font-size="10">Mar</text>
+        <text x="152" y="120" text-anchor="middle" fill="var(--muted-foreground)" font-size="10">Apr</text>
+        <text x="187" y="120" text-anchor="middle" fill="var(--muted-foreground)" font-size="10">May</text>
+        <text x="222" y="120" text-anchor="middle" fill="var(--muted-foreground)" font-size="10">Jun</text>
+        <text x="257" y="120" text-anchor="middle" fill="var(--muted-foreground)" font-size="10">Jul</text>
+        <text x="292" y="120" text-anchor="middle" fill="var(--muted-foreground)" font-size="10">Aug</text>
+      </svg>
+      <div class="mt-2 pt-2 border-t border-[var(--border)] flex justify-between text-xs text-[var(--muted-foreground)]">
+        <span>Downtown: <strong class="text-[var(--foreground)]">€3.21M</strong></span>
+        <span>Seaside: <strong class="text-[var(--foreground)]">€2.35M</strong></span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
