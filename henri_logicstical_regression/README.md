@@ -4,6 +4,20 @@ Six model variants (**logistic regression, random forest and CatBoost, each ordi
 expected room demand and whether scarce rooms are worth saving for future guests.
 The objective is accommodated revenue minus relocation expense.
 
+## Official evaluation kit
+
+Use [EVALUATION.md](EVALUATION.md) for the final-window checklist. The comparison runner
+uses frozen bundles, fresh processes, timeouts and incremental scoreboards:
+
+```sh
+python3 evaluation_runner.py --list
+python3 evaluation_runner.py --preflight --all
+python3 evaluation_runner.py --evaluator /path/to/kit/evaluate.py
+```
+
+Only the official evaluator reads the 2017 dataset. The default comparison has a
+15-minute budget, leaving time to verify and submit the winning ZIP.
+
 ## Commands
 
 With the project virtual environment active:
