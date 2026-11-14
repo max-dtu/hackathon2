@@ -8,23 +8,15 @@ Your result is the net revenue: revenue of seated guests - walk penalties.
 
 Reading any 2017 data yourself is cheating.
 """
-import pandas as pd
+import sys
+from pathlib import Path
 
+# The working solution lives in henri_logicstical_regression/. Its modules import
+# each other as `src.*`, so that folder has to be on the import path.
+_PROJECT = Path(__file__).resolve().parent / "henri_logicstical_regression"
+if str(_PROJECT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT))
 
-class Solution:
-    def __init__(self, commitments: pd.DataFrame, capacity: dict[str, pd.Series]) -> None:
-        """Called once, before 2017 starts.
+from src.solution import Solution  # noqa: E402
 
-        commitments  2017 arrivals booked before 2017-01-01. The hotel already confirmed them, so
-                     decide() is never called for them. Same columns as train.csv, except:
-                     - no cancelled column;
-                     - arrival_date and booking_date are already pandas Timestamps, not strings.
-
-        capacity     hotel -> rooms free on each night of 2017 (indexed by date): the rooms minus
-                     guests who arrived in 2016 and are still in house.
-        """
-
-    def decide(self, booking: dict) -> bool:
-        """Called once per 2017 booking request, in booking-date order. `booking` is one row with
-        the same columns as commitments, as {column: value}. Return True to confirm the booking,
-        False to reject it."""
+__all__ = ["Solution"]

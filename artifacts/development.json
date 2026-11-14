@@ -1,0 +1,11 @@
+{
+  "signature": "43bab46dd84bf86fc09b140044fcbb7888dd12ae8d17cae6bc897d2aa87afb34",
+  "models": [
+    "logistic"
+  ],
+  "cutoff": "2016-07-01",
+  "schema_version": 3,
+  "model_fingerprints": {
+    "logistic": "15d82bed7ed367a498bf69be9c970b57cd118c09bd15bebe9a8e956840ba1559"
+  }
+}

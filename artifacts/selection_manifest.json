@@ -1,0 +1,21 @@
+{
+  "signature": "4ab15de802a7721e6504fd61086c9a6e98e3baee4b79c0d636fb7aae5587426f",
+  "selection": {
+    "version": 3,
+    "model": "logistic",
+    "mode": "expected",
+    "margin": 0.0,
+    "allowance": 0,
+    "allowance_fraction": 0.1,
+    "protection": 1.0
+  },
+  "benchmark": {
+    "version": 3,
+    "model": "logistic",
+    "mode": "expected",
+    "margin": 0.0,
+    "allowance": 0,
+    "allowance_fraction": 0.05,
+    "protection": 1.0
+  }
+}

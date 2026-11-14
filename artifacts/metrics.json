@@ -1,0 +1,3083 @@
+{
+  "schema_version": 3,
+  "selection_period": "July\u2013September 2016",
+  "models": {
+    "logistic": {
+      "rows": 4512,
+      "log_loss": 0.5224375563081646,
+      "brier": 0.16521506483251192,
+      "auc": 0.753356894989658,
+      "calibration": [
+        {
+          "band": "(-0.001, 0.1]",
+          "rows": 2298,
+          "predicted": 0.042278976371050644,
+          "actual": 0.10748476936466493
+        },
+        {
+          "band": "(0.1, 0.2]",
+          "rows": 902,
+          "predicted": 0.14447012396377978,
+          "actual": 0.27161862527716185
+        },
+        {
+          "band": "(0.2, 0.3]",
+          "rows": 488,
+          "predicted": 0.24334088005702573,
+          "actual": 0.375
+        },
+        {
+          "band": "(0.3, 0.4]",
+          "rows": 288,
+          "predicted": 0.3468313789868641,
+          "actual": 0.4583333333333333
+        },
+        {
+          "band": "(0.4, 0.5]",
+          "rows": 178,
+          "predicted": 0.44535064734110924,
+          "actual": 0.43258426966292135
+        },
+        {
+          "band": "(0.5, 0.6]",
+          "rows": 161,
+          "predicted": 0.5463812037961633,
+          "actual": 0.5962732919254659
+        },
+        {
+          "band": "(0.6, 0.7]",
+          "rows": 80,
+          "predicted": 0.6382068453695028,
+          "actual": 0.4875
+        },
+        {
+          "band": "(0.7, 0.8]",
+          "rows": 51,
+          "predicted": 0.7497082566665995,
+          "actual": 0.45098039215686275
+        },
+        {
+          "band": "(0.8, 0.9]",
+          "rows": 19,
+          "predicted": 0.8453833748903105,
+          "actual": 0.3684210526315789
+        },
+        {
+          "band": "(0.9, 1.0]",
+          "rows": 47,
+          "predicted": 0.9781631138957453,
+          "actual": 1.0
+        }
+      ],
+      "hotels": {
+        "Seaside Hotel": {
+          "rows": 1269,
+          "log_loss": 0.5612197692232823,
+          "brier": 0.17240652236352874,
+          "auc": 0.6855239024106207,
+          "calibration": [
+            {
+              "band": "(-0.001, 0.1]",
+              "rows": 750,
+              "predicted": 0.038995482016793065,
+              "actual": 0.14
+            },
+            {
+              "band": "(0.1, 0.2]",
+              "rows": 274,
+              "predicted": 0.14301839954961956,
+              "actual": 0.3175182481751825
+            },
+            {
+              "band": "(0.2, 0.3]",
+              "rows": 92,
+              "predicted": 0.23963013770271885,
+              "actual": 0.358695652173913
+            },
+            {
+              "band": "(0.3, 0.4]",
+              "rows": 72,
+              "predicted": 0.3420520087198671,
+              "actual": 0.2777777777777778
+            },
+            {
+              "band": "(0.4, 0.5]",
+              "rows": 35,
+              "predicted": 0.447695760024705,
+              "actual": 0.2571428571428571
+            },
+            {
+              "band": "(0.5, 0.6]",
+              "rows": 31,
+              "predicted": 0.5479393262488602,
+              "actual": 0.3870967741935484
+            },
+            {
+              "band": "(0.6, 0.7]",
+              "rows": 8,
+              "predicted": 0.6486057026787948,
+              "actual": 0.625
+            },
+            {
+              "band": "(0.7, 0.8]",
+              "rows": 3,
+              "predicted": 0.7466214559228259,
+              "actual": 0.6666666666666666
+            },
+            {
+              "band": "(0.8, 0.9]",
+              "rows": 1,
+              "predicted": 0.8299099129959413,
+              "actual": 1.0
+            },
+            {
+              "band": "(0.9, 1.0]",
+              "rows": 3,
+              "predicted": 0.9276152068742478,
+              "actual": 1.0
+            }
+          ]
+        },
+        "Downtown Hotel": {
+          "rows": 3243,
+          "log_loss": 0.5072619077761621,
+          "brier": 0.16240101623341838,
+          "auc": 0.7778583719177778,
+          "calibration": [
+            {
+              "band": "(-0.001, 0.1]",
+              "rows": 1548,
+              "predicted": 0.04386981665896613,
+              "actual": 0.0917312661498708
+            },
+            {
+              "band": "(0.1, 0.2]",
+              "rows": 628,
+              "predicted": 0.14510351964766505,
+              "actual": 0.2515923566878981
+            },
+            {
+              "band": "(0.2, 0.3]",
+              "rows": 396,
+              "predicted": 0.24420297171509706,
+              "actual": 0.3787878787878788
+            },
+            {
+              "band": "(0.3, 0.4]",
+              "rows": 216,
+              "predicted": 0.3484245024091965,
+              "actual": 0.5185185185185185
+            },
+            {
+              "band": "(0.4, 0.5]",
+              "rows": 143,
+              "predicted": 0.444776668712257,
+              "actual": 0.4755244755244755
+            },
+            {
+              "band": "(0.5, 0.6]",
+              "rows": 130,
+              "predicted": 0.5460096515189817,
+              "actual": 0.6461538461538462
+            },
+            {
+              "band": "(0.6, 0.7]",
+              "rows": 72,
+              "predicted": 0.6370514167795814,
+              "actual": 0.4722222222222222
+            },
+            {
+              "band": "(0.7, 0.8]",
+              "rows": 48,
+              "predicted": 0.7499011817130853,
+              "actual": 0.4375
+            },
+            {
+              "band": "(0.8, 0.9]",
+              "rows": 18,
+              "predicted": 0.84624301166222,
+              "actual": 0.3333333333333333
+            },
+            {
+              "band": "(0.9, 1.0]",
+              "rows": 44,
+              "predicted": 0.9816095621017563,
+              "actual": 1.0
+            }
+          ]
+        }
+      },
+      "lead_bands": {
+        "0-7": {
+          "rows": 1623,
+          "log_loss": 0.3610683657949178,
+          "brier": 0.1039351905499133,
+          "auc": 0.7214060186723872,
+          "calibration": [
+            {
+              "band": "(-0.001, 0.1]",
+              "rows": 912,
+              "predicted": 0.039056854875438245,
+              "actual": 0.05701754385964912
+            },
+            {
+              "band": "(0.1, 0.2]",
+              "rows": 316,
+              "predicted": 0.14386178105039787,
+              "actual": 0.13924050632911392
+            },
+            {
+              "band": "(0.2, 0.3]",
+              "rows": 178,
+              "predicted": 0.24459326059366343,
+              "actual": 0.19662921348314608
+            },
+            {
+              "band": "(0.3, 0.4]",
+              "rows": 81,
+              "predicted": 0.3499029445851513,
+              "actual": 0.2222222222222222
+            },
+            {
+              "band": "(0.4, 0.5]",
+              "rows": 41,
+              "predicted": 0.43877355760652065,
+              "actual": 0.21951219512195122
+            },
+            {
+              "band": "(0.5, 0.6]",
+              "rows": 42,
+              "predicted": 0.5424294123687502,
+              "actual": 0.19047619047619047
+            },
+            {
+              "band": "(0.6, 0.7]",
+              "rows": 21,
+              "predicted": 0.6465817620825501,
+              "actual": 0.19047619047619047
+            },
+            {
+              "band": "(0.7, 0.8]",
+              "rows": 19,
+              "predicted": 0.7484009604535506,
+              "actual": 0.21052631578947367
+            },
+            {
+              "band": "(0.8, 0.9]",
+              "rows": 4,
+              "predicted": 0.8229425876545367,
+              "actual": 0.25
+            },
+            {
+              "band": "(0.9, 1.0]",
+              "rows": 9,
+              "predicted": 0.9846757966228589,
+              "actual": 1.0
+            }
+          ]
+        },
+        "8-30": {
+          "rows": 1537,
+          "log_loss": 0.5942601159863623,
+          "brier": 0.1890878188090255,
+          "auc": 0.7346303865269448,
+          "calibration": [
+            {
+              "band": "(-0.001, 0.1]",
+              "rows": 818,
+              "predicted": 0.04314290378253378,
+              "actual": 0.14180929095354522
+            },
+            {
+              "band": "(0.1, 0.2]",
+              "rows": 311,
+              "predicted": 0.14416193549861284,
+              "actual": 0.33762057877813506
+            },
+            {
+              "band": "(0.2, 0.3]",
+              "rows": 152,
+              "predicted": 0.24179544885023543,
+              "actual": 0.4407894736842105
+            },
+            {
+              "band": "(0.3, 0.4]",
+              "rows": 92,
+              "predicted": 0.34281852172471117,
+              "actual": 0.42391304347826086
+            },
+            {
+              "band": "(0.4, 0.5]",
+              "rows": 56,
+              "predicted": 0.4508620266078287,
+              "actual": 0.4642857142857143
+            },
+            {
+              "band": "(0.5, 0.6]",
+              "rows": 51,
+              "predicted": 0.5449414047292235,
+              "actual": 0.6274509803921569
+            },
+            {
+              "band": "(0.6, 0.7]",
+              "rows": 25,
+              "predicted": 0.6357446886429999,
+              "actual": 0.56
+            },
+            {
+              "band": "(0.7, 0.8]",
+              "rows": 17,
+              "predicted": 0.7597543350932985,
+              "actual": 0.6470588235294118
+            },
+            {
+              "band": "(0.8, 0.9]",
+              "rows": 4,
+              "predicted": 0.8265646637392016,
+              "actual": 0.5
+            },
+            {
+              "band": "(0.9, 1.0]",
+              "rows": 11,
+              "predicted": 0.9634281144852939,
+              "actual": 1.0
+            }
+          ]
+        },
+        "31-90": {
+          "rows": 1352,
+          "log_loss": 0.6345018477117222,
+          "brier": 0.2116387431599943,
+          "auc": 0.7767999109019519,
+          "calibration": [
+            {
+              "band": "(-0.001, 0.1]",
+              "rows": 568,
+              "predicted": 0.04620834640873604,
+              "actual": 0.13908450704225353
+            },
+            {
+              "band": "(0.1, 0.2]",
+              "rows": 275,
+              "predicted": 0.14551769841212758,
+              "actual": 0.3490909090909091
+            },
+            {
+              "band": "(0.2, 0.3]",
+              "rows": 158,
+              "predicted": 0.24341671428430808,
+              "actual": 0.5126582278481012
+            },
+            {
+              "band": "(0.3, 0.4]",
+              "rows": 115,
+              "predicted": 0.34787821424474935,
+              "actual": 0.6521739130434783
+            },
+            {
+              "band": "(0.4, 0.5]",
+              "rows": 81,
+              "predicted": 0.44486945524458865,
+              "actual": 0.5185185185185185
+            },
+            {
+              "band": "(0.5, 0.6]",
+              "rows": 68,
+              "predicted": 0.5499018654485937,
+              "actual": 0.8235294117647058
+            },
+            {
+              "band": "(0.6, 0.7]",
+              "rows": 34,
+              "predicted": 0.6348445120515196,
+              "actual": 0.6176470588235294
+            },
+            {
+              "band": "(0.7, 0.8]",
+              "rows": 15,
+              "predicted": 0.7399786096528691,
+              "actual": 0.5333333333333333
+            },
+            {
+              "band": "(0.8, 0.9]",
+              "rows": 11,
+              "predicted": 0.860386828849177,
+              "actual": 0.36363636363636365
+            },
+            {
+              "band": "(0.9, 1.0]",
+              "rows": 27,
+              "predicted": 0.981995367561335,
+              "actual": 1.0
+            }
+          ]
+        }
+      },
+      "cache_hit": true
+    }
+  },
+  "validation_policies": {
+    "reject_new": {
+      "net_revenue": 339203.5150000078,
+      "revenue": 2393153.5400000075,
+      "penalties": 2053950.0249999997,
+      "seated": 3529,
+      "walked": 2346,
+      "occupied_nights": 18640.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2393153.5400000075,
+          "penalties": 2053950.0249999997,
+          "walked": 2346,
+          "seated": 3529,
+          "foregone_revenue": 821580.0099999997
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1165269.0399999989,
+          "penalties": 869419.5499999997,
+          "seated": 2380,
+          "walked": 1522,
+          "occupied_nights": 10075.0,
+          "foregone_revenue": 347767.8199999991,
+          "net_revenue": 295849.4899999992,
+          "accepted_requests": 0,
+          "rejected_requests": 3243,
+          "occupancy": 0.9030205252307968
+        },
+        "Seaside Hotel": {
+          "revenue": 1227884.500000002,
+          "penalties": 1184530.4750000008,
+          "seated": 1149,
+          "walked": 824,
+          "occupied_nights": 8565.0,
+          "foregone_revenue": 473812.1900000004,
+          "net_revenue": 43354.025000001304,
+          "accepted_requests": 0,
+          "rejected_requests": 1269,
+          "occupancy": 0.9520898176967542
+        }
+      },
+      "foregone_revenue": 821580.0099999997,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 0,
+      "requests": 4512,
+      "rejected_requests": 4512,
+      "commitments": 9891,
+      "occupancy": 0.9249243288840371,
+      "change_vs_inherited_only": {
+        "revenue": 0.0,
+        "penalties": 0.0,
+        "net_revenue": 0.0,
+        "walked": 0
+      }
+    },
+    "capacity": {
+      "net_revenue": 351100.5150000083,
+      "revenue": 2405050.540000008,
+      "penalties": 2053950.0249999997,
+      "seated": 3614,
+      "walked": 2346,
+      "occupied_nights": 18743.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2393153.5400000075,
+          "penalties": 2053950.0249999997,
+          "walked": 2346,
+          "seated": 3529,
+          "foregone_revenue": 821580.0099999997
+        },
+        "new": {
+          "revenue": 11897.000000000002,
+          "penalties": 0.0,
+          "walked": 0,
+          "seated": 85,
+          "foregone_revenue": 0.0
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1172351.2399999986,
+          "penalties": 869419.5499999997,
+          "seated": 2434,
+          "walked": 1522,
+          "occupied_nights": 10133.0,
+          "foregone_revenue": 347767.8199999991,
+          "net_revenue": 302931.6899999989,
+          "accepted_requests": 77,
+          "rejected_requests": 3166,
+          "occupancy": 0.9082190553016044
+        },
+        "Seaside Hotel": {
+          "revenue": 1232699.3000000021,
+          "penalties": 1184530.4750000008,
+          "seated": 1180,
+          "walked": 824,
+          "occupied_nights": 8610.0,
+          "foregone_revenue": 473812.1900000004,
+          "net_revenue": 48168.82500000135,
+          "accepted_requests": 34,
+          "rejected_requests": 1235,
+          "occupancy": 0.9570920409070698
+        }
+      },
+      "foregone_revenue": 821580.0099999997,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 111,
+      "requests": 4512,
+      "rejected_requests": 4401,
+      "commitments": 9891,
+      "occupancy": 0.9300352304867762,
+      "change_vs_inherited_only": {
+        "revenue": 11897.000000000466,
+        "penalties": 0.0,
+        "net_revenue": 11897.000000000466,
+        "walked": 0
+      }
+    },
+    "logistic_extra_0.0_price_0.0": {
+      "net_revenue": 423327.4350000096,
+      "revenue": 2477277.4600000093,
+      "penalties": 2053950.0249999997,
+      "seated": 3939,
+      "walked": 2346,
+      "occupied_nights": 19344.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2393153.5400000075,
+          "penalties": 2053950.0249999997,
+          "walked": 2346,
+          "seated": 3529,
+          "foregone_revenue": 821580.0099999997
+        },
+        "new": {
+          "revenue": 84123.91999999997,
+          "penalties": 0.0,
+          "walked": 0,
+          "seated": 410,
+          "foregone_revenue": 0.0
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1242953.1600000001,
+          "penalties": 869419.5499999997,
+          "seated": 2752,
+          "walked": 1522,
+          "occupied_nights": 10721.0,
+          "foregone_revenue": 347767.8199999991,
+          "net_revenue": 373533.61000000045,
+          "accepted_requests": 547,
+          "rejected_requests": 2696,
+          "occupancy": 0.9609213946401363
+        },
+        "Seaside Hotel": {
+          "revenue": 1234324.3000000021,
+          "penalties": 1184530.4750000008,
+          "seated": 1187,
+          "walked": 824,
+          "occupied_nights": 8623.0,
+          "foregone_revenue": 473812.1900000004,
+          "net_revenue": 49793.82500000135,
+          "accepted_requests": 47,
+          "rejected_requests": 1222,
+          "occupancy": 0.9585371276122722
+        }
+      },
+      "foregone_revenue": 821580.0099999997,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 594,
+      "requests": 4512,
+      "rejected_requests": 3918,
+      "commitments": 9891,
+      "occupancy": 0.959857093236739,
+      "change_vs_inherited_only": {
+        "revenue": 84123.92000000179,
+        "penalties": 0.0,
+        "net_revenue": 84123.92000000179,
+        "walked": 0
+      }
+    },
+    "logistic_extra_0.0_price_1.0": {
+      "net_revenue": 429533.235000008,
+      "revenue": 2484191.2600000077,
+      "penalties": 2054658.0249999997,
+      "seated": 3880,
+      "walked": 2349,
+      "occupied_nights": 19251.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2393038.3400000073,
+          "penalties": 2054238.0249999997,
+          "walked": 2347,
+          "seated": 3528,
+          "foregone_revenue": 821695.2099999996
+        },
+        "new": {
+          "revenue": 91152.91999999997,
+          "penalties": 420.0,
+          "walked": 2,
+          "seated": 352,
+          "foregone_revenue": 168.0
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1249206.9599999986,
+          "penalties": 870127.5499999997,
+          "seated": 2692,
+          "walked": 1525,
+          "occupied_nights": 10622.0,
+          "foregone_revenue": 348051.0199999991,
+          "net_revenue": 379079.40999999887,
+          "accepted_requests": 417,
+          "rejected_requests": 2826,
+          "occupancy": 0.9520480415882405
+        },
+        "Seaside Hotel": {
+          "revenue": 1234984.3000000021,
+          "penalties": 1184530.4750000008,
+          "seated": 1188,
+          "walked": 824,
+          "occupied_nights": 8629.0,
+          "foregone_revenue": 473812.1900000004,
+          "net_revenue": 50453.82500000135,
+          "accepted_requests": 46,
+          "rejected_requests": 1223,
+          "occupancy": 0.9592040907069809
+        }
+      },
+      "foregone_revenue": 821863.2099999996,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 463,
+      "requests": 4512,
+      "rejected_requests": 4049,
+      "commitments": 9891,
+      "occupancy": 0.9552423956731008,
+      "change_vs_inherited_only": {
+        "revenue": 91037.7200000002,
+        "penalties": 708.0,
+        "net_revenue": 90329.7200000002,
+        "walked": 3
+      }
+    },
+    "logistic_extra_0.05_price_0.0": {
+      "net_revenue": 436074.1350000112,
+      "revenue": 2493570.160000011,
+      "penalties": 2057496.0249999997,
+      "seated": 3985,
+      "walked": 2356,
+      "occupied_nights": 19478.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2392023.140000007,
+          "penalties": 2056776.0249999997,
+          "walked": 2353,
+          "seated": 3522,
+          "foregone_revenue": 822710.4099999996
+        },
+        "new": {
+          "revenue": 101547.01999999995,
+          "penalties": 720.0,
+          "walked": 3,
+          "seated": 463,
+          "foregone_revenue": 288.0
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1257388.8599999999,
+          "penalties": 872965.5499999997,
+          "seated": 2794,
+          "walked": 1532,
+          "occupied_nights": 10837.0,
+          "foregone_revenue": 349186.2199999991,
+          "net_revenue": 384423.3100000002,
+          "accepted_requests": 617,
+          "rejected_requests": 2626,
+          "occupancy": 0.9713184547817514
+        },
+        "Seaside Hotel": {
+          "revenue": 1236181.3000000021,
+          "penalties": 1184530.4750000008,
+          "seated": 1191,
+          "walked": 824,
+          "occupied_nights": 8641.0,
+          "foregone_revenue": 473812.1900000004,
+          "net_revenue": 51650.82500000135,
+          "accepted_requests": 53,
+          "rejected_requests": 1216,
+          "occupancy": 0.9605380168963984
+        }
+      },
+      "foregone_revenue": 822998.4099999996,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 670,
+      "requests": 4512,
+      "rejected_requests": 3842,
+      "commitments": 9891,
+      "occupancy": 0.9665062273606907,
+      "change_vs_inherited_only": {
+        "revenue": 100416.62000000337,
+        "penalties": 3546.0,
+        "net_revenue": 96870.62000000337,
+        "walked": 10
+      }
+    },
+    "logistic_extra_0.05_price_1.0": {
+      "net_revenue": 439016.8250000088,
+      "revenue": 2497500.6000000085,
+      "penalties": 2058483.7749999997,
+      "seated": 3906,
+      "walked": 2359,
+      "occupied_nights": 19342.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2391718.040000007,
+          "penalties": 2057538.7749999997,
+          "walked": 2355,
+          "seated": 3520,
+          "foregone_revenue": 823015.5099999995
+        },
+        "new": {
+          "revenue": 105782.55999999994,
+          "penalties": 945.0,
+          "walked": 4,
+          "seated": 386,
+          "foregone_revenue": 378.0
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1261041.2999999984,
+          "penalties": 873590.7999999997,
+          "seated": 2713,
+          "walked": 1534,
+          "occupied_nights": 10697.0,
+          "foregone_revenue": 349436.3199999991,
+          "net_revenue": 387450.4999999987,
+          "accepted_requests": 470,
+          "rejected_requests": 2773,
+          "occupancy": 0.9587702787487676
+        },
+        "Seaside Hotel": {
+          "revenue": 1236459.3000000021,
+          "penalties": 1184892.9750000008,
+          "seated": 1193,
+          "walked": 825,
+          "occupied_nights": 8645.0,
+          "foregone_revenue": 473957.1900000004,
+          "net_revenue": 51566.32500000135,
+          "accepted_requests": 53,
+          "rejected_requests": 1216,
+          "occupancy": 0.9609826589595376
+        }
+      },
+      "foregone_revenue": 823393.5099999995,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 523,
+      "requests": 4512,
+      "rejected_requests": 3989,
+      "commitments": 9891,
+      "occupancy": 0.9597578524289188,
+      "change_vs_inherited_only": {
+        "revenue": 104347.06000000099,
+        "penalties": 4533.75,
+        "net_revenue": 99813.31000000099,
+        "walked": 13
+      }
+    },
+    "logistic_extra_0.1_price_0.0": {
+      "net_revenue": 436336.06500001135,
+      "revenue": 2505717.590000011,
+      "penalties": 2069381.5249999997,
+      "seated": 3998,
+      "walked": 2401,
+      "occupied_nights": 19554.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2389246.740000007,
+          "penalties": 2063717.0249999997,
+          "walked": 2374,
+          "seated": 3501,
+          "foregone_revenue": 825486.8099999996
+        },
+        "new": {
+          "revenue": 116470.84999999993,
+          "penalties": 5664.5,
+          "walked": 27,
+          "seated": 497,
+          "foregone_revenue": 2265.8
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1269349.2900000005,
+          "penalties": 884148.5499999996,
+          "seated": 2805,
+          "walked": 1574,
+          "occupied_nights": 10911.0,
+          "foregone_revenue": 353659.4199999991,
+          "net_revenue": 385200.7400000009,
+          "accepted_requests": 692,
+          "rejected_requests": 2551,
+          "occupancy": 0.9779510621134714
+        },
+        "Seaside Hotel": {
+          "revenue": 1236368.3000000021,
+          "penalties": 1185232.9750000008,
+          "seated": 1193,
+          "walked": 827,
+          "occupied_nights": 8643.0,
+          "foregone_revenue": 474093.1900000004,
+          "net_revenue": 51135.32500000135,
+          "accepted_requests": 64,
+          "rejected_requests": 1205,
+          "occupancy": 0.960760337927968
+        }
+      },
+      "foregone_revenue": 827752.6099999996,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 756,
+      "requests": 4512,
+      "rejected_requests": 3756,
+      "commitments": 9891,
+      "occupancy": 0.9702773780578574,
+      "change_vs_inherited_only": {
+        "revenue": 112564.05000000354,
+        "penalties": 15431.5,
+        "net_revenue": 97132.55000000354,
+        "walked": 55
+      }
+    },
+    "logistic_extra_0.1_price_1.0": {
+      "net_revenue": 447823.30500000995,
+      "revenue": 2513633.4300000095,
+      "penalties": 2065810.1249999995,
+      "seated": 3932,
+      "walked": 2383,
+      "occupied_nights": 19436.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2390141.390000007,
+          "penalties": 2061480.3999999997,
+          "walked": 2368,
+          "seated": 3507,
+          "foregone_revenue": 824592.1599999996
+        },
+        "new": {
+          "revenue": 123492.0399999999,
+          "penalties": 4329.725,
+          "walked": 15,
+          "seated": 425,
+          "foregone_revenue": 1731.8899999999999
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1277042.189999999,
+          "penalties": 880222.1499999996,
+          "seated": 2737,
+          "walked": 1555,
+          "occupied_nights": 10789.0,
+          "foregone_revenue": 352088.8599999991,
+          "net_revenue": 396820.03999999946,
+          "accepted_requests": 537,
+          "rejected_requests": 2706,
+          "occupancy": 0.967016222999014
+        },
+        "Seaside Hotel": {
+          "revenue": 1236591.240000002,
+          "penalties": 1185587.9750000008,
+          "seated": 1195,
+          "walked": 828,
+          "occupied_nights": 8647.0,
+          "foregone_revenue": 474235.1900000004,
+          "net_revenue": 51003.265000001295,
+          "accepted_requests": 60,
+          "rejected_requests": 1209,
+          "occupancy": 0.9612049799911072
+        }
+      },
+      "foregone_revenue": 826324.0499999996,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 597,
+      "requests": 4512,
+      "rejected_requests": 3915,
+      "commitments": 9891,
+      "occupancy": 0.964422170396467,
+      "change_vs_inherited_only": {
+        "revenue": 120479.890000002,
+        "penalties": 11860.09999999986,
+        "net_revenue": 108619.79000000213,
+        "walked": 37
+      }
+    },
+    "logistic_extra_0.15_price_0.0": {
+      "net_revenue": 424002.64500001236,
+      "revenue": 2513331.0200000117,
+      "penalties": 2089328.3749999993,
+      "seated": 3988,
+      "walked": 2465,
+      "occupied_nights": 19606.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2385719.390000007,
+          "penalties": 2072535.3999999997,
+          "walked": 2401,
+          "seated": 3474,
+          "foregone_revenue": 829014.1599999996
+        },
+        "new": {
+          "revenue": 127611.62999999992,
+          "penalties": 16792.975000000002,
+          "walked": 64,
+          "seated": 514,
+          "foregone_revenue": 6717.1900000000005
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1276078.78,
+          "penalties": 903075.3999999994,
+          "seated": 2788,
+          "walked": 1634,
+          "occupied_nights": 10953.0,
+          "foregone_revenue": 361230.15999999916,
+          "net_revenue": 373003.3800000006,
+          "accepted_requests": 758,
+          "rejected_requests": 2485,
+          "occupancy": 0.9817155149233665
+        },
+        "Seaside Hotel": {
+          "revenue": 1237252.2400000019,
+          "penalties": 1186252.9750000008,
+          "seated": 1200,
+          "walked": 831,
+          "occupied_nights": 8653.0,
+          "foregone_revenue": 474501.1900000004,
+          "net_revenue": 50999.26500000106,
+          "accepted_requests": 75,
+          "rejected_requests": 1194,
+          "occupancy": 0.9618719430858159
+        }
+      },
+      "foregone_revenue": 835731.3499999995,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 833,
+      "requests": 4512,
+      "rejected_requests": 3679,
+      "commitments": 9891,
+      "occupancy": 0.972857639061182,
+      "change_vs_inherited_only": {
+        "revenue": 120177.48000000417,
+        "penalties": 35378.34999999963,
+        "net_revenue": 84799.13000000454,
+        "walked": 119
+      }
+    },
+    "logistic_extra_0.15_price_1.0": {
+      "net_revenue": 443689.8700000101,
+      "revenue": 2525795.4700000095,
+      "penalties": 2082105.5999999994,
+      "seated": 3937,
+      "walked": 2429,
+      "occupied_nights": 19504.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2385602.100000007,
+          "penalties": 2072828.6249999995,
+          "walked": 2398,
+          "seated": 3477,
+          "foregone_revenue": 829131.4499999996
+        },
+        "new": {
+          "revenue": 140193.36999999997,
+          "penalties": 9276.974999999999,
+          "walked": 31,
+          "seated": 460,
+          "foregone_revenue": 3710.79
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1289119.2299999993,
+          "penalties": 895852.6249999995,
+          "seated": 2741,
+          "walked": 1598,
+          "occupied_nights": 10856.0,
+          "foregone_revenue": 358341.04999999906,
+          "net_revenue": 393266.60499999975,
+          "accepted_requests": 605,
+          "rejected_requests": 2638,
+          "occupancy": 0.9730214215290849
+        },
+        "Seaside Hotel": {
+          "revenue": 1236676.240000002,
+          "penalties": 1186252.9750000008,
+          "seated": 1196,
+          "walked": 831,
+          "occupied_nights": 8648.0,
+          "foregone_revenue": 474501.1900000004,
+          "net_revenue": 50423.265000001295,
+          "accepted_requests": 65,
+          "rejected_requests": 1204,
+          "occupancy": 0.961316140506892
+        }
+      },
+      "foregone_revenue": 832842.2399999996,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 670,
+      "requests": 4512,
+      "rejected_requests": 3842,
+      "commitments": 9891,
+      "occupancy": 0.967796357862353,
+      "change_vs_inherited_only": {
+        "revenue": 132641.93000000203,
+        "penalties": 28155.57499999972,
+        "net_revenue": 104486.35500000231,
+        "walked": 83
+      }
+    },
+    "logistic_extra_0.2_price_0.0": {
+      "net_revenue": 402346.98500001244,
+      "revenue": 2521738.360000012,
+      "penalties": 2119391.3749999995,
+      "seated": 3974,
+      "walked": 2556,
+      "occupied_nights": 19641.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2381755.9100000067,
+          "penalties": 2082444.0999999996,
+          "walked": 2425,
+          "seated": 3450,
+          "foregone_revenue": 832977.6399999995
+        },
+        "new": {
+          "revenue": 139982.44999999998,
+          "penalties": 36947.275,
+          "walked": 131,
+          "seated": 524,
+          "foregone_revenue": 14778.909999999998
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1283561.9200000002,
+          "penalties": 932305.3999999994,
+          "seated": 2771,
+          "walked": 1721,
+          "occupied_nights": 10980.0,
+          "foregone_revenue": 372922.1599999991,
+          "net_revenue": 351256.5200000007,
+          "accepted_requests": 863,
+          "rejected_requests": 2380,
+          "occupancy": 0.9841355203011563
+        },
+        "Seaside Hotel": {
+          "revenue": 1238176.4400000016,
+          "penalties": 1187085.9750000008,
+          "seated": 1203,
+          "walked": 835,
+          "occupied_nights": 8661.0,
+          "foregone_revenue": 474834.39000000036,
+          "net_revenue": 51090.46500000078,
+          "accepted_requests": 82,
+          "rejected_requests": 1187,
+          "occupancy": 0.9627612272120942
+        }
+      },
+      "foregone_revenue": 847756.5499999996,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 945,
+      "requests": 4512,
+      "rejected_requests": 3567,
+      "commitments": 9891,
+      "occupancy": 0.974594353198035,
+      "change_vs_inherited_only": {
+        "revenue": 128584.82000000449,
+        "penalties": 65441.34999999986,
+        "net_revenue": 63143.47000000463,
+        "walked": 210
+      }
+    },
+    "logistic_extra_0.2_price_1.0": {
+      "net_revenue": 431779.49000001,
+      "revenue": 2537816.79000001,
+      "penalties": 2106037.3,
+      "seated": 3950,
+      "walked": 2488,
+      "occupied_nights": 19565.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2381469.230000007,
+          "penalties": 2083160.7999999996,
+          "walked": 2424,
+          "seated": 3451,
+          "foregone_revenue": 833264.3199999997
+        },
+        "new": {
+          "revenue": 156347.55999999988,
+          "penalties": 22876.500000000007,
+          "walked": 64,
+          "seated": 499,
+          "foregone_revenue": 9150.600000000002
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1300286.1499999987,
+          "penalties": 918732.8249999993,
+          "seated": 2750,
+          "walked": 1654,
+          "occupied_nights": 10912.0,
+          "foregone_revenue": 367493.1299999992,
+          "net_revenue": 381553.3249999995,
+          "accepted_requests": 701,
+          "rejected_requests": 2542,
+          "occupancy": 0.9780406919422784
+        },
+        "Seaside Hotel": {
+          "revenue": 1237530.6400000018,
+          "penalties": 1187304.4750000008,
+          "seated": 1200,
+          "walked": 834,
+          "occupied_nights": 8653.0,
+          "foregone_revenue": 474921.7900000004,
+          "net_revenue": 50226.16500000097,
+          "accepted_requests": 76,
+          "rejected_requests": 1193,
+          "occupancy": 0.9618719430858159
+        }
+      },
+      "foregone_revenue": 842414.9199999997,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 777,
+      "requests": 4512,
+      "rejected_requests": 3735,
+      "commitments": 9891,
+      "occupancy": 0.9708232025008684,
+      "change_vs_inherited_only": {
+        "revenue": 144663.25000000233,
+        "penalties": 52087.27500000014,
+        "net_revenue": 92575.97500000219,
+        "walked": 142
+      }
+    },
+    "logistic_extra_0.3_price_0.0": {
+      "net_revenue": 317255.28500001226,
+      "revenue": 2538425.4100000123,
+      "penalties": 2221170.125,
+      "seated": 3936,
+      "walked": 2807,
+      "occupied_nights": 19697.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2366794.260000005,
+          "penalties": 2119848.225,
+          "walked": 2511,
+          "seated": 3364,
+          "foregone_revenue": 847939.2899999995
+        },
+        "new": {
+          "revenue": 171631.1500000001,
+          "penalties": 101321.89999999998,
+          "walked": 296,
+          "seated": 572,
+          "foregone_revenue": 40528.759999999995
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1294436.62,
+          "penalties": 1017922.0999999993,
+          "seated": 2724,
+          "walked": 1930,
+          "occupied_nights": 11011.0,
+          "foregone_revenue": 407168.83999999904,
+          "net_revenue": 276514.52000000083,
+          "accepted_requests": 1106,
+          "rejected_requests": 2137,
+          "occupancy": 0.986914044994174
+        },
+        "Seaside Hotel": {
+          "revenue": 1243988.7900000017,
+          "penalties": 1203248.0250000008,
+          "seated": 1212,
+          "walked": 877,
+          "occupied_nights": 8686.0,
+          "foregone_revenue": 481299.2100000003,
+          "net_revenue": 40740.76500000083,
+          "accepted_requests": 146,
+          "rejected_requests": 1123,
+          "occupancy": 0.9655402401067141
+        }
+      },
+      "foregone_revenue": 888468.0499999995,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 1252,
+      "requests": 4512,
+      "rejected_requests": 3260,
+      "commitments": 9891,
+      "occupancy": 0.9773730958169999,
+      "change_vs_inherited_only": {
+        "revenue": 145271.87000000477,
+        "penalties": 167220.10000000033,
+        "net_revenue": -21948.229999995558,
+        "walked": 461
+      }
+    },
+    "logistic_extra_0.3_price_1.0": {
+      "net_revenue": 363251.0100000077,
+      "revenue": 2563032.360000009,
+      "penalties": 2199781.3500000015,
+      "seated": 3928,
+      "walked": 2732,
+      "occupied_nights": 19661.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2369422.010000005,
+          "penalties": 2113278.8499999996,
+          "walked": 2505,
+          "seated": 3370,
+          "foregone_revenue": 845311.5399999995
+        },
+        "new": {
+          "revenue": 193610.3500000002,
+          "penalties": 86502.49999999999,
+          "walked": 227,
+          "seated": 558,
+          "foregone_revenue": 34601.00000000001
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1317059.669999999,
+          "penalties": 998063.1999999991,
+          "seated": 2715,
+          "walked": 1855,
+          "occupied_nights": 10970.0,
+          "foregone_revenue": 399225.279999999,
+          "net_revenue": 318996.46999999986,
+          "accepted_requests": 940,
+          "rejected_requests": 2303,
+          "occupancy": 0.983239222013086
+        },
+        "Seaside Hotel": {
+          "revenue": 1245972.6900000018,
+          "penalties": 1201718.1500000006,
+          "seated": 1213,
+          "walked": 877,
+          "occupied_nights": 8691.0,
+          "foregone_revenue": 480687.2600000003,
+          "net_revenue": 44254.5400000012,
+          "accepted_requests": 142,
+          "rejected_requests": 1127,
+          "occupancy": 0.9660960426856381
+        }
+      },
+      "foregone_revenue": 879912.5399999995,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 1082,
+      "requests": 4512,
+      "rejected_requests": 3430,
+      "commitments": 9891,
+      "occupancy": 0.9755867612762368,
+      "change_vs_inherited_only": {
+        "revenue": 169878.8200000017,
+        "penalties": 145831.32500000182,
+        "net_revenue": 24047.49499999988,
+        "walked": 386
+      }
+    },
+    "logistic_extra_0.4_price_0.0": {
+      "net_revenue": 198050.73500001198,
+      "revenue": 2558039.810000013,
+      "penalties": 2359989.075000001,
+      "seated": 3900,
+      "walked": 3082,
+      "occupied_nights": 19715.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2341598.2100000046,
+          "penalties": 2182838.3499999996,
+          "walked": 2605,
+          "seated": 3270,
+          "foregone_revenue": 873135.3399999997
+        },
+        "new": {
+          "revenue": 216441.60000000024,
+          "penalties": 177150.725,
+          "walked": 477,
+          "seated": 630,
+          "foregone_revenue": 70860.28999999996
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1306794.9399999997,
+          "penalties": 1133889.7749999973,
+          "seated": 2682,
+          "walked": 2164,
+          "occupied_nights": 11027.0,
+          "foregone_revenue": 453555.9099999993,
+          "net_revenue": 172905.16500000237,
+          "accepted_requests": 1364,
+          "rejected_requests": 1879,
+          "occupancy": 0.9883481222550865
+        },
+        "Seaside Hotel": {
+          "revenue": 1251244.870000002,
+          "penalties": 1226099.3000000007,
+          "seated": 1218,
+          "walked": 918,
+          "occupied_nights": 8688.0,
+          "foregone_revenue": 490439.72000000015,
+          "net_revenue": 25145.57000000123,
+          "accepted_requests": 209,
+          "rejected_requests": 1060,
+          "occupancy": 0.9657625611382836
+        }
+      },
+      "foregone_revenue": 943995.6299999997,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 1573,
+      "requests": 4512,
+      "rejected_requests": 2939,
+      "commitments": 9891,
+      "occupancy": 0.9782662630873815,
+      "change_vs_inherited_only": {
+        "revenue": 164886.2700000056,
+        "penalties": 306039.05000000144,
+        "net_revenue": -141152.77999999584,
+        "walked": 736
+      }
+    },
+    "logistic_extra_0.4_price_1.0": {
+      "net_revenue": 258637.40000000922,
+      "revenue": 2591471.3000000115,
+      "penalties": 2332833.9000000022,
+      "seated": 3904,
+      "walked": 2979,
+      "occupied_nights": 19707.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2344217.0300000045,
+          "penalties": 2176291.3,
+          "walked": 2595,
+          "seated": 3280,
+          "foregone_revenue": 870516.5199999999
+        },
+        "new": {
+          "revenue": 247254.27000000025,
+          "penalties": 156542.60000000003,
+          "walked": 384,
+          "seated": 624,
+          "foregone_revenue": 62617.03999999998
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1332603.759999999,
+          "penalties": 1100084.2749999987,
+          "seated": 2679,
+          "walked": 2055,
+          "occupied_nights": 11004.0,
+          "foregone_revenue": 440033.70999999915,
+          "net_revenue": 232519.48500000034,
+          "accepted_requests": 1200,
+          "rejected_requests": 2043,
+          "occupancy": 0.9862866361925249
+        },
+        "Seaside Hotel": {
+          "revenue": 1258867.5400000024,
+          "penalties": 1232749.625000001,
+          "seated": 1225,
+          "walked": 924,
+          "occupied_nights": 8703.0,
+          "foregone_revenue": 493099.85000000015,
+          "net_revenue": 26117.915000001434,
+          "accepted_requests": 221,
+          "rejected_requests": 1048,
+          "occupancy": 0.9674299688750556
+        }
+      },
+      "foregone_revenue": 933133.5599999998,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 1421,
+      "requests": 4512,
+      "rejected_requests": 3091,
+      "commitments": 9891,
+      "occupancy": 0.9778692998561008,
+      "change_vs_inherited_only": {
+        "revenue": 198317.76000000397,
+        "penalties": 278883.87500000256,
+        "net_revenue": -80566.1149999986,
+        "walked": 633
+      }
+    },
+    "logistic_extra_0.6_price_0.0": {
+      "net_revenue": -237918.95499998564,
+      "revenue": 2620753.9700000146,
+      "penalties": 2858672.9250000003,
+      "seated": 3825,
+      "walked": 3861,
+      "occupied_nights": 19792.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2253768.820000006,
+          "penalties": 2402411.8249999997,
+          "walked": 2849,
+          "seated": 3026,
+          "foregone_revenue": 960964.7300000003
+        },
+        "new": {
+          "revenue": 366985.1500000004,
+          "penalties": 456261.1000000002,
+          "walked": 1012,
+          "seated": 799,
+          "foregone_revenue": 182504.44000000015
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1338183.8099999991,
+          "penalties": 1448232.4499999974,
+          "seated": 2602,
+          "walked": 2743,
+          "occupied_nights": 11054.0,
+          "foregone_revenue": 579292.9799999995,
+          "net_revenue": -110048.63999999827,
+          "accepted_requests": 2016,
+          "rejected_requests": 1227,
+          "occupancy": 0.9907681276328762
+        },
+        "Seaside Hotel": {
+          "revenue": 1282570.1600000025,
+          "penalties": 1410440.4749999996,
+          "seated": 1223,
+          "walked": 1118,
+          "occupied_nights": 8738.0,
+          "foregone_revenue": 564176.1900000001,
+          "net_revenue": -127870.31499999715,
+          "accepted_requests": 516,
+          "rejected_requests": 753,
+          "occupancy": 0.9713205869275233
+        }
+      },
+      "foregone_revenue": 1143469.1700000004,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 2532,
+      "requests": 4512,
+      "rejected_requests": 1980,
+      "commitments": 9891,
+      "occupancy": 0.9820870341884583,
+      "change_vs_inherited_only": {
+        "revenue": 227600.43000000715,
+        "penalties": 804722.9000000006,
+        "net_revenue": -577122.4699999935,
+        "walked": 1515
+      }
+    },
+    "logistic_extra_0.6_price_1.0": {
+      "net_revenue": -183727.65999998385,
+      "revenue": 2653208.6900000162,
+      "penalties": 2836936.35,
+      "seated": 3843,
+      "walked": 3746,
+      "occupied_nights": 19793.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2251638.1100000087,
+          "penalties": 2407738.599999999,
+          "walked": 2849,
+          "seated": 3026,
+          "foregone_revenue": 963095.4400000003
+        },
+        "new": {
+          "revenue": 401570.58000000025,
+          "penalties": 429197.75000000035,
+          "walked": 897,
+          "seated": 817,
+          "foregone_revenue": 171679.09999999995
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1366372.2100000004,
+          "penalties": 1421563.7749999962,
+          "seated": 2613,
+          "walked": 2631,
+          "occupied_nights": 11053.0,
+          "foregone_revenue": 568625.5099999997,
+          "net_revenue": -55191.56499999575,
+          "accepted_requests": 1898,
+          "rejected_requests": 1345,
+          "occupancy": 0.9906784978040692
+        },
+        "Seaside Hotel": {
+          "revenue": 1286836.4800000032,
+          "penalties": 1415372.5750000002,
+          "seated": 1230,
+          "walked": 1115,
+          "occupied_nights": 8740.0,
+          "foregone_revenue": 566149.0300000001,
+          "net_revenue": -128536.09499999695,
+          "accepted_requests": 514,
+          "rejected_requests": 755,
+          "occupancy": 0.9715429079590929
+        }
+      },
+      "foregone_revenue": 1134774.5400000003,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 2412,
+      "requests": 4512,
+      "rejected_requests": 2100,
+      "commitments": 9891,
+      "occupancy": 0.9821366545923684,
+      "change_vs_inherited_only": {
+        "revenue": 260055.15000000875,
+        "penalties": 782986.3250000004,
+        "net_revenue": -522931.17499999166,
+        "walked": 1400
+      }
+    },
+    "logistic_extra_0.8_price_0.0": {
+      "net_revenue": -987217.3949999898,
+      "revenue": 2699665.5800000113,
+      "penalties": 3686882.975000001,
+      "seated": 3765,
+      "walked": 4865,
+      "occupied_nights": 19826.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2120910.2700000014,
+          "penalties": 2734558.199999996,
+          "walked": 3149,
+          "seated": 2726,
+          "foregone_revenue": 1093823.280000002
+        },
+        "new": {
+          "revenue": 578755.3100000002,
+          "penalties": 952324.7749999993,
+          "walked": 1716,
+          "seated": 1039,
+          "foregone_revenue": 380929.90999999974
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1376988.79,
+          "penalties": 1834096.1999999995,
+          "seated": 2546,
+          "walked": 3368,
+          "occupied_nights": 11070.0,
+          "foregone_revenue": 733638.4799999999,
+          "net_revenue": -457107.40999999945,
+          "accepted_requests": 2754,
+          "rejected_requests": 489,
+          "occupancy": 0.9922022048937886
+        },
+        "Seaside Hotel": {
+          "revenue": 1322676.790000002,
+          "penalties": 1852786.7750000001,
+          "seated": 1219,
+          "walked": 1497,
+          "occupied_nights": 8756.0,
+          "foregone_revenue": 741114.7099999997,
+          "net_revenue": -530109.9849999982,
+          "accepted_requests": 989,
+          "rejected_requests": 280,
+          "occupancy": 0.9733214762116497
+        }
+      },
+      "foregone_revenue": 1474753.1900000016,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 3743,
+      "requests": 4512,
+      "rejected_requests": 769,
+      "commitments": 9891,
+      "occupancy": 0.9837741279214013,
+      "change_vs_inherited_only": {
+        "revenue": 306512.04000000376,
+        "penalties": 1632932.9500000014,
+        "net_revenue": -1326420.9099999976,
+        "walked": 2519
+      }
+    },
+    "logistic_extra_0.8_price_1.0": {
+      "net_revenue": -964907.0149999922,
+      "revenue": 2718305.81000001,
+      "penalties": 3683212.825000002,
+      "seated": 3751,
+      "walked": 4790,
+      "occupied_nights": 19829.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2117995.5400000024,
+          "penalties": 2741845.0249999966,
+          "walked": 3157,
+          "seated": 2718,
+          "foregone_revenue": 1096738.0100000014
+        },
+        "new": {
+          "revenue": 600310.2699999997,
+          "penalties": 941367.7999999991,
+          "walked": 1633,
+          "seated": 1033,
+          "foregone_revenue": 376547.12000000005
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1391082.5600000003,
+          "penalties": 1827591.7499999986,
+          "seated": 2530,
+          "walked": 3296,
+          "occupied_nights": 11071.0,
+          "foregone_revenue": 731036.6999999993,
+          "net_revenue": -436509.1899999983,
+          "accepted_requests": 2619,
+          "rejected_requests": 624,
+          "occupancy": 0.9922918347225956
+        },
+        "Seaside Hotel": {
+          "revenue": 1327223.250000002,
+          "penalties": 1855621.0750000002,
+          "seated": 1221,
+          "walked": 1494,
+          "occupied_nights": 8758.0,
+          "foregone_revenue": 742248.4299999998,
+          "net_revenue": -528397.8249999981,
+          "accepted_requests": 985,
+          "rejected_requests": 284,
+          "occupancy": 0.9735437972432192
+        }
+      },
+      "foregone_revenue": 1473285.1300000015,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 3604,
+      "requests": 4512,
+      "rejected_requests": 908,
+      "commitments": 9891,
+      "occupancy": 0.9839229891331316,
+      "change_vs_inherited_only": {
+        "revenue": 325152.27000000235,
+        "penalties": 1629262.8000000024,
+        "net_revenue": -1304110.53,
+        "walked": 2444
+      }
+    },
+    "logistic_extra_1.0_price_0.0": {
+      "net_revenue": -1489906.674999996,
+      "revenue": 2733271.6500000088,
+      "penalties": 4223178.325000005,
+      "seated": 3718,
+      "walked": 5475,
+      "occupied_nights": 19828.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2054547.8500000017,
+          "penalties": 2900464.249999998,
+          "walked": 3289,
+          "seated": 2586,
+          "foregone_revenue": 1160185.7000000027
+        },
+        "new": {
+          "revenue": 678723.7999999996,
+          "penalties": 1322714.0749999976,
+          "walked": 2186,
+          "seated": 1132,
+          "foregone_revenue": 529085.6300000001
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1396501.9399999992,
+          "penalties": 2099669.75,
+          "seated": 2495,
+          "walked": 3766,
+          "occupied_nights": 11072.0,
+          "foregone_revenue": 839867.9,
+          "net_revenue": -703167.8100000008,
+          "accepted_requests": 3166,
+          "rejected_requests": 77,
+          "occupancy": 0.9923814645514027
+        },
+        "Seaside Hotel": {
+          "revenue": 1336769.7100000018,
+          "penalties": 2123508.575,
+          "seated": 1223,
+          "walked": 1709,
+          "occupied_nights": 8756.0,
+          "foregone_revenue": 849403.4299999992,
+          "net_revenue": -786738.8649999984,
+          "accepted_requests": 1236,
+          "rejected_requests": 33,
+          "occupancy": 0.9733214762116497
+        }
+      },
+      "foregone_revenue": 1689271.3300000029,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 4402,
+      "requests": 4512,
+      "rejected_requests": 110,
+      "commitments": 9891,
+      "occupancy": 0.9838733687292215,
+      "change_vs_inherited_only": {
+        "revenue": 340118.11000000127,
+        "penalties": 2169228.3000000054,
+        "net_revenue": -1829110.190000004,
+        "walked": 3129
+      }
+    },
+    "logistic_extra_1.0_price_1.0": {
+      "net_revenue": -1452251.324999996,
+      "revenue": 2736465.800000008,
+      "penalties": 4188717.125000004,
+      "seated": 3714,
+      "walked": 5399,
+      "occupied_nights": 19827.0,
+      "by_origin": {
+        "inherited": {
+          "revenue": 2056015.4000000015,
+          "penalties": 2896795.374999998,
+          "walked": 3287,
+          "seated": 2588,
+          "foregone_revenue": 1158718.1500000025
+        },
+        "new": {
+          "revenue": 680450.3999999994,
+          "penalties": 1291921.7499999977,
+          "walked": 2112,
+          "seated": 1126,
+          "foregone_revenue": 516768.70000000036
+        }
+      },
+      "by_hotel": {
+        "Downtown Hotel": {
+          "revenue": 1399696.089999999,
+          "penalties": 2061554.774999999,
+          "seated": 2491,
+          "walked": 3687,
+          "occupied_nights": 11071.0,
+          "foregone_revenue": 824621.9099999995,
+          "net_revenue": -661858.685,
+          "accepted_requests": 3046,
+          "rejected_requests": 197,
+          "occupancy": 0.9922918347225956
+        },
+        "Seaside Hotel": {
+          "revenue": 1336769.7100000018,
+          "penalties": 2127162.35,
+          "seated": 1223,
+          "walked": 1712,
+          "occupied_nights": 8756.0,
+          "foregone_revenue": 850864.9399999992,
+          "net_revenue": -790392.6399999983,
+          "accepted_requests": 1239,
+          "rejected_requests": 30,
+          "occupancy": 0.9733214762116497
+        }
+      },
+      "foregone_revenue": 1675486.850000003,
+      "initial_in_house": {
+        "Downtown Hotel": 89,
+        "Seaside Hotel": 96
+      },
+      "minimum_initial_free_rooms": {
+        "Downtown Hotel": 35.0,
+        "Seaside Hotel": 7.0
+      },
+      "accepted_requests": 4285,
+      "requests": 4512,
+      "rejected_requests": 227,
+      "commitments": 9891,
+      "occupancy": 0.9838237483253114,
+      "change_vs_inherited_only": {
+        "revenue": 343312.2600000007,
+        "penalties": 2134767.1000000043,
+        "net_revenue": -1791454.8400000038,
+        "walked": 3053
+      }
+    }
+  },
+  "scenarios": {
+    "validation/inherited": {
+      "reject_new": {
+        "net_revenue": 339203.5150000078,
+        "revenue": 2393153.5400000075,
+        "penalties": 2053950.0249999997,
+        "seated": 3529,
+        "walked": 2346,
+        "occupied_nights": 18640.0,
+        "by_origin": {
+          "inherited": {
+            "revenue": 2393153.5400000075,
+            "penalties": 2053950.0249999997,
+            "walked": 2346,
+            "seated": 3529,
+            "foregone_revenue": 821580.0099999997
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 1165269.0399999989,
+            "penalties": 869419.5499999997,
+            "seated": 2380,
+            "walked": 1522,
+            "occupied_nights": 10075.0,
+            "foregone_revenue": 347767.8199999991,
+            "net_revenue": 295849.4899999992,
+            "accepted_requests": 0,
+            "rejected_requests": 3243,
+            "occupancy": 0.9030205252307968
+          },
+          "Seaside Hotel": {
+            "revenue": 1227884.500000002,
+            "penalties": 1184530.4750000008,
+            "seated": 1149,
+            "walked": 824,
+            "occupied_nights": 8565.0,
+            "foregone_revenue": 473812.1900000004,
+            "net_revenue": 43354.025000001304,
+            "accepted_requests": 0,
+            "rejected_requests": 1269,
+            "occupancy": 0.9520898176967542
+          }
+        },
+        "foregone_revenue": 821580.0099999997,
+        "initial_in_house": {
+          "Downtown Hotel": 89,
+          "Seaside Hotel": 96
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 35.0,
+          "Seaside Hotel": 7.0
+        },
+        "accepted_requests": 0,
+        "requests": 4512,
+        "rejected_requests": 4512,
+        "commitments": 9891,
+        "occupancy": 0.9249243288840371,
+        "change_vs_inherited_only": {
+          "revenue": 0.0,
+          "penalties": 0.0,
+          "net_revenue": 0.0,
+          "walked": 0
+        }
+      },
+      "capacity": {
+        "net_revenue": 350134.1950000075,
+        "revenue": 2404084.220000007,
+        "penalties": 2053950.0249999997,
+        "seated": 3600,
+        "walked": 2346,
+        "occupied_nights": 18729.0,
+        "by_origin": {
+          "inherited": {
+            "revenue": 2393153.5400000075,
+            "penalties": 2053950.0249999997,
+            "walked": 2346,
+            "seated": 3529,
+            "foregone_revenue": 821580.0099999997
+          },
+          "new": {
+            "revenue": 10930.680000000002,
+            "penalties": 0.0,
+            "walked": 0,
+            "seated": 71,
+            "foregone_revenue": 0.0
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 1171384.9199999983,
+            "penalties": 869419.5499999997,
+            "seated": 2420,
+            "walked": 1522,
+            "occupied_nights": 10119.0,
+            "foregone_revenue": 347767.8199999991,
+            "net_revenue": 301965.3699999986,
+            "accepted_requests": 58,
+            "rejected_requests": 3185,
+            "occupancy": 0.906964237698306
+          },
+          "Seaside Hotel": {
+            "revenue": 1232699.3000000021,
+            "penalties": 1184530.4750000008,
+            "seated": 1180,
+            "walked": 824,
+            "occupied_nights": 8610.0,
+            "foregone_revenue": 473812.1900000004,
+            "net_revenue": 48168.82500000135,
+            "accepted_requests": 34,
+            "rejected_requests": 1235,
+            "occupancy": 0.9570920409070698
+          }
+        },
+        "foregone_revenue": 821580.0099999997,
+        "initial_in_house": {
+          "Downtown Hotel": 89,
+          "Seaside Hotel": 96
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 35.0,
+          "Seaside Hotel": 7.0
+        },
+        "accepted_requests": 92,
+        "requests": 4512,
+        "rejected_requests": 4420,
+        "commitments": 9891,
+        "occupancy": 0.929340544832035,
+        "change_vs_inherited_only": {
+          "revenue": 10930.679999999702,
+          "penalties": 0.0,
+          "net_revenue": 10930.679999999702,
+          "walked": 0
+        }
+      },
+      "current_benchmark": {
+        "net_revenue": 439016.8250000088,
+        "revenue": 2497500.6000000085,
+        "penalties": 2058483.7749999997,
+        "seated": 3906,
+        "walked": 2359,
+        "occupied_nights": 19342.0,
+        "by_origin": {
+          "inherited": {
+            "revenue": 2391718.040000007,
+            "penalties": 2057538.7749999997,
+            "walked": 2355,
+            "seated": 3520,
+            "foregone_revenue": 823015.5099999995
+          },
+          "new": {
+            "revenue": 105782.55999999994,
+            "penalties": 945.0,
+            "walked": 4,
+            "seated": 386,
+            "foregone_revenue": 378.0
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 1261041.2999999984,
+            "penalties": 873590.7999999997,
+            "seated": 2713,
+            "walked": 1534,
+            "occupied_nights": 10697.0,
+            "foregone_revenue": 349436.3199999991,
+            "net_revenue": 387450.4999999987,
+            "accepted_requests": 470,
+            "rejected_requests": 2773,
+            "occupancy": 0.9587702787487676
+          },
+          "Seaside Hotel": {
+            "revenue": 1236459.3000000021,
+            "penalties": 1184892.9750000008,
+            "seated": 1193,
+            "walked": 825,
+            "occupied_nights": 8645.0,
+            "foregone_revenue": 473957.1900000004,
+            "net_revenue": 51566.32500000135,
+            "accepted_requests": 53,
+            "rejected_requests": 1216,
+            "occupancy": 0.9609826589595376
+          }
+        },
+        "foregone_revenue": 823393.5099999995,
+        "initial_in_house": {
+          "Downtown Hotel": 89,
+          "Seaside Hotel": 96
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 35.0,
+          "Seaside Hotel": 7.0
+        },
+        "accepted_requests": 523,
+        "requests": 4512,
+        "rejected_requests": 3989,
+        "commitments": 9891,
+        "occupancy": 0.9597578524289188,
+        "change_vs_inherited_only": {
+          "revenue": 104347.06000000099,
+          "penalties": 4533.75,
+          "net_revenue": 99813.31000000099,
+          "walked": 13
+        }
+      },
+      "selected": {
+        "net_revenue": 447823.30500000995,
+        "revenue": 2513633.4300000095,
+        "penalties": 2065810.1249999995,
+        "seated": 3932,
+        "walked": 2383,
+        "occupied_nights": 19436.0,
+        "by_origin": {
+          "inherited": {
+            "revenue": 2390141.390000007,
+            "penalties": 2061480.3999999997,
+            "walked": 2368,
+            "seated": 3507,
+            "foregone_revenue": 824592.1599999996
+          },
+          "new": {
+            "revenue": 123492.0399999999,
+            "penalties": 4329.725,
+            "walked": 15,
+            "seated": 425,
+            "foregone_revenue": 1731.8899999999999
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 1277042.189999999,
+            "penalties": 880222.1499999996,
+            "seated": 2737,
+            "walked": 1555,
+            "occupied_nights": 10789.0,
+            "foregone_revenue": 352088.8599999991,
+            "net_revenue": 396820.03999999946,
+            "accepted_requests": 537,
+            "rejected_requests": 2706,
+            "occupancy": 0.967016222999014
+          },
+          "Seaside Hotel": {
+            "revenue": 1236591.240000002,
+            "penalties": 1185587.9750000008,
+            "seated": 1195,
+            "walked": 828,
+            "occupied_nights": 8647.0,
+            "foregone_revenue": 474235.1900000004,
+            "net_revenue": 51003.265000001295,
+            "accepted_requests": 60,
+            "rejected_requests": 1209,
+            "occupancy": 0.9612049799911072
+          }
+        },
+        "foregone_revenue": 826324.0499999996,
+        "initial_in_house": {
+          "Downtown Hotel": 89,
+          "Seaside Hotel": 96
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 35.0,
+          "Seaside Hotel": 7.0
+        },
+        "accepted_requests": 597,
+        "requests": 4512,
+        "rejected_requests": 3915,
+        "commitments": 9891,
+        "occupancy": 0.964422170396467,
+        "change_vs_inherited_only": {
+          "revenue": 120479.890000002,
+          "penalties": 11860.09999999986,
+          "net_revenue": 108619.79000000213,
+          "walked": 37
+        }
+      },
+      "comparisons": {
+        "capacity": {
+          "net_revenue": 97689.11000000243,
+          "revenue": 109549.21000000229,
+          "penalties": 11860.09999999986
+        },
+        "current_benchmark": {
+          "net_revenue": 8806.480000001146,
+          "revenue": 16132.830000001006,
+          "penalties": 7326.34999999986
+        }
+      }
+    },
+    "validation/controlled": {
+      "reject_new": {
+        "net_revenue": 0.0,
+        "revenue": 0.0,
+        "penalties": 0.0,
+        "seated": 0,
+        "walked": 0,
+        "occupied_nights": 0.0,
+        "by_origin": {},
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 0.0,
+            "penalties": 0.0,
+            "seated": 0,
+            "walked": 0,
+            "occupied_nights": 0.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 0.0,
+            "accepted_requests": 0,
+            "rejected_requests": 3243,
+            "occupancy": 0.0
+          },
+          "Seaside Hotel": {
+            "revenue": 0.0,
+            "penalties": 0.0,
+            "seated": 0,
+            "walked": 0,
+            "occupied_nights": 0.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 0.0,
+            "accepted_requests": 0,
+            "rejected_requests": 1269,
+            "occupancy": 0.0
+          }
+        },
+        "foregone_revenue": 0,
+        "initial_in_house": {
+          "Downtown Hotel": 0,
+          "Seaside Hotel": 0
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 124.0,
+          "Seaside Hotel": 103.0
+        },
+        "accepted_requests": 0,
+        "requests": 4512,
+        "rejected_requests": 4512,
+        "commitments": 0,
+        "occupancy": 0.0,
+        "change_vs_inherited_only": {
+          "revenue": 0.0,
+          "penalties": 0.0,
+          "net_revenue": 0.0,
+          "walked": 0
+        }
+      },
+      "capacity": {
+        "net_revenue": 1117110.1299999992,
+        "revenue": 1117110.1299999992,
+        "penalties": 0.0,
+        "seated": 2867,
+        "walked": 0,
+        "occupied_nights": 7123.0,
+        "by_origin": {
+          "new": {
+            "revenue": 1117110.1299999992,
+            "penalties": 0.0,
+            "walked": 0,
+            "seated": 2867,
+            "foregone_revenue": 0.0
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 618714.2299999996,
+            "penalties": 0.0,
+            "seated": 1875,
+            "walked": 0,
+            "occupied_nights": 4455.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 618714.2299999996,
+            "accepted_requests": 2573,
+            "rejected_requests": 670,
+            "occupancy": 0.390515427769986
+          },
+          "Seaside Hotel": {
+            "revenue": 498395.90000000043,
+            "penalties": 0.0,
+            "seated": 992,
+            "walked": 0,
+            "occupied_nights": 2668.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 498395.90000000043,
+            "accepted_requests": 1269,
+            "rejected_requests": 0,
+            "occupancy": 0.2815533980582524
+          }
+        },
+        "foregone_revenue": 0.0,
+        "initial_in_house": {
+          "Downtown Hotel": 0,
+          "Seaside Hotel": 0
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 124.0,
+          "Seaside Hotel": 103.0
+        },
+        "accepted_requests": 3842,
+        "requests": 4512,
+        "rejected_requests": 670,
+        "commitments": 0,
+        "occupancy": 0.3410745067994637,
+        "change_vs_inherited_only": {
+          "revenue": 1117110.1299999992,
+          "penalties": 0.0,
+          "net_revenue": 1117110.1299999992,
+          "walked": 0
+        }
+      },
+      "current_benchmark": {
+        "net_revenue": 1185068.9799999986,
+        "revenue": 1185068.9799999986,
+        "penalties": 0.0,
+        "seated": 3129,
+        "walked": 0,
+        "occupied_nights": 7717.0,
+        "by_origin": {
+          "new": {
+            "revenue": 1185068.9799999986,
+            "penalties": 0.0,
+            "walked": 0,
+            "seated": 3129,
+            "foregone_revenue": 0.0
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 686673.0799999993,
+            "penalties": 0.0,
+            "seated": 2137,
+            "walked": 0,
+            "occupied_nights": 5049.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 686673.0799999993,
+            "accepted_requests": 2884,
+            "rejected_requests": 359,
+            "occupancy": 0.4425841514726508
+          },
+          "Seaside Hotel": {
+            "revenue": 498395.90000000043,
+            "penalties": 0.0,
+            "seated": 992,
+            "walked": 0,
+            "occupied_nights": 2668.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 498395.90000000043,
+            "accepted_requests": 1269,
+            "rejected_requests": 0,
+            "occupancy": 0.2815533980582524
+          }
+        },
+        "foregone_revenue": 0.0,
+        "initial_in_house": {
+          "Downtown Hotel": 0,
+          "Seaside Hotel": 0
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 124.0,
+          "Seaside Hotel": 103.0
+        },
+        "accepted_requests": 4153,
+        "requests": 4512,
+        "rejected_requests": 359,
+        "commitments": 0,
+        "occupancy": 0.3695173338440912,
+        "change_vs_inherited_only": {
+          "revenue": 1185068.9799999986,
+          "penalties": 0.0,
+          "net_revenue": 1185068.9799999986,
+          "walked": 0
+        }
+      },
+      "selected": {
+        "net_revenue": 1199518.719999999,
+        "revenue": 1199518.719999999,
+        "penalties": 0.0,
+        "seated": 3189,
+        "walked": 0,
+        "occupied_nights": 7865.0,
+        "by_origin": {
+          "new": {
+            "revenue": 1199518.719999999,
+            "penalties": 0.0,
+            "walked": 0,
+            "seated": 3189,
+            "foregone_revenue": 0.0
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 701122.819999999,
+            "penalties": 0.0,
+            "seated": 2197,
+            "walked": 0,
+            "occupied_nights": 5197.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 701122.819999999,
+            "accepted_requests": 2957,
+            "rejected_requests": 286,
+            "occupancy": 0.45555750350631136
+          },
+          "Seaside Hotel": {
+            "revenue": 498395.90000000043,
+            "penalties": 0.0,
+            "seated": 992,
+            "walked": 0,
+            "occupied_nights": 2668.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 498395.90000000043,
+            "accepted_requests": 1269,
+            "rejected_requests": 0,
+            "occupancy": 0.2815533980582524
+          }
+        },
+        "foregone_revenue": 0.0,
+        "initial_in_house": {
+          "Downtown Hotel": 0,
+          "Seaside Hotel": 0
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 124.0,
+          "Seaside Hotel": 103.0
+        },
+        "accepted_requests": 4226,
+        "requests": 4512,
+        "rejected_requests": 286,
+        "commitments": 0,
+        "occupancy": 0.3766040988316414,
+        "change_vs_inherited_only": {
+          "revenue": 1199518.719999999,
+          "penalties": 0.0,
+          "net_revenue": 1199518.719999999,
+          "walked": 0
+        }
+      },
+      "comparisons": {
+        "capacity": {
+          "net_revenue": 82408.58999999985,
+          "revenue": 82408.58999999985,
+          "penalties": 0.0
+        },
+        "current_benchmark": {
+          "net_revenue": 14449.740000000456,
+          "revenue": 14449.740000000456,
+          "penalties": 0.0
+        }
+      }
+    },
+    "later_diagnostic/inherited": {
+      "reject_new": {
+        "net_revenue": 466423.38499999745,
+        "revenue": 1108030.9599999972,
+        "penalties": 641607.5749999997,
+        "seated": 3119,
+        "walked": 1292,
+        "occupied_nights": 12743.0,
+        "by_origin": {
+          "inherited": {
+            "revenue": 1108030.9599999972,
+            "penalties": 641607.5749999997,
+            "walked": 1292,
+            "seated": 3119,
+            "foregone_revenue": 256643.0300000001
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 764312.0800000005,
+            "penalties": 443113.0999999997,
+            "seated": 2050,
+            "walked": 857,
+            "occupied_nights": 7266.0,
+            "foregone_revenue": 177245.24000000008,
+            "net_revenue": 321198.98000000085,
+            "accepted_requests": 0,
+            "rejected_requests": 3142,
+            "occupancy": 0.6515423242467718
+          },
+          "Seaside Hotel": {
+            "revenue": 343718.87999999954,
+            "penalties": 198494.47500000006,
+            "seated": 1069,
+            "walked": 435,
+            "occupied_nights": 5477.0,
+            "foregone_revenue": 79397.79,
+            "net_revenue": 145224.40499999947,
+            "accepted_requests": 0,
+            "rejected_requests": 2114,
+            "occupancy": 0.6036592086410228
+          }
+        },
+        "foregone_revenue": 256643.0300000001,
+        "initial_in_house": {
+          "Downtown Hotel": 105,
+          "Seaside Hotel": 92
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 19.0,
+          "Seaside Hotel": 11.0
+        },
+        "accepted_requests": 0,
+        "requests": 5256,
+        "rejected_requests": 5256,
+        "commitments": 8640,
+        "occupancy": 0.630061804697157,
+        "change_vs_inherited_only": {
+          "revenue": 0.0,
+          "penalties": 0.0,
+          "net_revenue": 0.0,
+          "walked": 0
+        }
+      },
+      "capacity": {
+        "net_revenue": 664258.635,
+        "revenue": 1305866.2099999997,
+        "penalties": 641607.5749999997,
+        "seated": 4326,
+        "walked": 1292,
+        "occupied_nights": 15306.0,
+        "by_origin": {
+          "inherited": {
+            "revenue": 1108030.9599999972,
+            "penalties": 641607.5749999997,
+            "walked": 1292,
+            "seated": 3119,
+            "foregone_revenue": 256643.0300000001
+          },
+          "new": {
+            "revenue": 197835.24999999988,
+            "penalties": 0.0,
+            "walked": 0,
+            "seated": 1207,
+            "foregone_revenue": 0.0
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 848658.7999999999,
+            "penalties": 443113.0999999997,
+            "seated": 2486,
+            "walked": 857,
+            "occupied_nights": 8175.0,
+            "foregone_revenue": 177245.24000000008,
+            "net_revenue": 405545.70000000024,
+            "accepted_requests": 623,
+            "rejected_requests": 2519,
+            "occupancy": 0.7330523672883787
+          },
+          "Seaside Hotel": {
+            "revenue": 457207.40999999974,
+            "penalties": 198494.47500000006,
+            "seated": 1840,
+            "walked": 435,
+            "occupied_nights": 7131.0,
+            "foregone_revenue": 79397.79,
+            "net_revenue": 258712.93499999968,
+            "accepted_requests": 894,
+            "rejected_requests": 1220,
+            "occupancy": 0.7859583379257137
+          }
+        },
+        "foregone_revenue": 256643.0300000001,
+        "initial_in_house": {
+          "Downtown Hotel": 105,
+          "Seaside Hotel": 92
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 19.0,
+          "Seaside Hotel": 11.0
+        },
+        "accepted_requests": 1517,
+        "requests": 5256,
+        "rejected_requests": 3739,
+        "commitments": 8640,
+        "occupancy": 0.7567861557478368,
+        "change_vs_inherited_only": {
+          "revenue": 197835.25000000256,
+          "penalties": 0.0,
+          "net_revenue": 197835.25000000256,
+          "walked": 0
+        }
+      },
+      "current_benchmark": {
+        "net_revenue": 837070.0550000023,
+        "revenue": 1479705.330000002,
+        "penalties": 642635.2749999997,
+        "seated": 4914,
+        "walked": 1298,
+        "occupied_nights": 17204.0,
+        "by_origin": {
+          "inherited": {
+            "revenue": 1107717.9799999974,
+            "penalties": 642390.0249999997,
+            "walked": 1297,
+            "seated": 3114,
+            "foregone_revenue": 256956.01000000013
+          },
+          "new": {
+            "revenue": 371987.35000000027,
+            "penalties": 245.25,
+            "walked": 1,
+            "seated": 1800,
+            "foregone_revenue": 98.1
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 984495.1799999999,
+            "penalties": 444140.7999999997,
+            "seated": 2935,
+            "walked": 863,
+            "occupied_nights": 9494.0,
+            "foregone_revenue": 177656.32000000012,
+            "net_revenue": 540354.3800000002,
+            "accepted_requests": 1290,
+            "rejected_requests": 1852,
+            "occupancy": 0.8513271162123386
+          },
+          "Seaside Hotel": {
+            "revenue": 495210.1499999995,
+            "penalties": 198494.47500000006,
+            "seated": 1979,
+            "walked": 435,
+            "occupied_nights": 7710.0,
+            "foregone_revenue": 79397.79,
+            "net_revenue": 296715.67499999946,
+            "accepted_requests": 1047,
+            "rejected_requests": 1067,
+            "occupancy": 0.8497740548881296
+          }
+        },
+        "foregone_revenue": 257054.11000000013,
+        "initial_in_house": {
+          "Downtown Hotel": 105,
+          "Seaside Hotel": 92
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 19.0,
+          "Seaside Hotel": 11.0
+        },
+        "accepted_requests": 2337,
+        "requests": 5256,
+        "rejected_requests": 2919,
+        "commitments": 8640,
+        "occupancy": 0.8506304079110012,
+        "change_vs_inherited_only": {
+          "revenue": 371674.37000000477,
+          "penalties": 1027.6999999999534,
+          "net_revenue": 370646.6700000048,
+          "walked": 6
+        }
+      },
+      "selected": {
+        "net_revenue": 857683.8750000021,
+        "revenue": 1501815.6500000018,
+        "penalties": 644131.7749999997,
+        "seated": 5003,
+        "walked": 1307,
+        "occupied_nights": 17485.0,
+        "by_origin": {
+          "inherited": {
+            "revenue": 1107537.3799999973,
+            "penalties": 642841.5249999997,
+            "walked": 1300,
+            "seated": 3111,
+            "foregone_revenue": 257136.61000000013
+          },
+          "new": {
+            "revenue": 394278.2700000003,
+            "penalties": 1290.25,
+            "walked": 7,
+            "seated": 1892,
+            "foregone_revenue": 516.1
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 997704.8699999996,
+            "penalties": 445179.7999999997,
+            "seated": 2980,
+            "walked": 867,
+            "occupied_nights": 9625.0,
+            "foregone_revenue": 178071.92000000013,
+            "net_revenue": 552525.07,
+            "accepted_requests": 1371,
+            "rejected_requests": 1771,
+            "occupancy": 0.8630738880918221
+          },
+          "Seaside Hotel": {
+            "revenue": 504110.7799999994,
+            "penalties": 198951.97500000006,
+            "seated": 2023,
+            "walked": 440,
+            "occupied_nights": 7860.0,
+            "foregone_revenue": 79580.79,
+            "net_revenue": 305158.80499999935,
+            "accepted_requests": 1103,
+            "rejected_requests": 1011,
+            "occupancy": 0.8663066240493773
+          }
+        },
+        "foregone_revenue": 257652.71000000014,
+        "initial_in_house": {
+          "Downtown Hotel": 105,
+          "Seaside Hotel": 92
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 19.0,
+          "Seaside Hotel": 11.0
+        },
+        "accepted_requests": 2474,
+        "requests": 5256,
+        "rejected_requests": 2782,
+        "commitments": 8640,
+        "occupancy": 0.8645241038318913,
+        "change_vs_inherited_only": {
+          "revenue": 393784.6900000046,
+          "penalties": 2524.1999999999534,
+          "net_revenue": 391260.49000000465,
+          "walked": 15
+        }
+      },
+      "comparisons": {
+        "capacity": {
+          "net_revenue": 193425.2400000021,
+          "revenue": 195949.44000000204,
+          "penalties": 2524.1999999999534
+        },
+        "current_benchmark": {
+          "net_revenue": 20613.819999999832,
+          "revenue": 22110.319999999832,
+          "penalties": 1496.5
+        }
+      }
+    },
+    "later_diagnostic/controlled": {
+      "reject_new": {
+        "net_revenue": 0.0,
+        "revenue": 0.0,
+        "penalties": 0.0,
+        "seated": 0,
+        "walked": 0,
+        "occupied_nights": 0.0,
+        "by_origin": {},
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 0.0,
+            "penalties": 0.0,
+            "seated": 0,
+            "walked": 0,
+            "occupied_nights": 0.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 0.0,
+            "accepted_requests": 0,
+            "rejected_requests": 3142,
+            "occupancy": 0.0
+          },
+          "Seaside Hotel": {
+            "revenue": 0.0,
+            "penalties": 0.0,
+            "seated": 0,
+            "walked": 0,
+            "occupied_nights": 0.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 0.0,
+            "accepted_requests": 0,
+            "rejected_requests": 2114,
+            "occupancy": 0.0
+          }
+        },
+        "foregone_revenue": 0,
+        "initial_in_house": {
+          "Downtown Hotel": 0,
+          "Seaside Hotel": 0
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 124.0,
+          "Seaside Hotel": 103.0
+        },
+        "accepted_requests": 0,
+        "requests": 5256,
+        "rejected_requests": 5256,
+        "commitments": 0,
+        "occupancy": 0.0,
+        "change_vs_inherited_only": {
+          "revenue": 0.0,
+          "penalties": 0.0,
+          "net_revenue": 0.0,
+          "walked": 0
+        }
+      },
+      "capacity": {
+        "net_revenue": 837655.4700000006,
+        "revenue": 837655.4700000006,
+        "penalties": 0.0,
+        "seated": 3837,
+        "walked": 0,
+        "occupied_nights": 9917.0,
+        "by_origin": {
+          "new": {
+            "revenue": 837655.4700000006,
+            "penalties": 0.0,
+            "walked": 0,
+            "seated": 3837,
+            "foregone_revenue": 0.0
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 538373.1599999996,
+            "penalties": 0.0,
+            "seated": 2016,
+            "walked": 0,
+            "occupied_nights": 5244.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 538373.1599999996,
+            "accepted_requests": 2774,
+            "rejected_requests": 368,
+            "occupancy": 0.4596774193548387
+          },
+          "Seaside Hotel": {
+            "revenue": 299282.30999999994,
+            "penalties": 0.0,
+            "seated": 1821,
+            "walked": 0,
+            "occupied_nights": 4673.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 299282.30999999994,
+            "accepted_requests": 2086,
+            "rejected_requests": 28,
+            "occupancy": 0.49314056563951036
+          }
+        },
+        "foregone_revenue": 0.0,
+        "initial_in_house": {
+          "Downtown Hotel": 0,
+          "Seaside Hotel": 0
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 124.0,
+          "Seaside Hotel": 103.0
+        },
+        "accepted_requests": 4860,
+        "requests": 5256,
+        "rejected_requests": 396,
+        "commitments": 0,
+        "occupancy": 0.4748611377130818,
+        "change_vs_inherited_only": {
+          "revenue": 837655.4700000006,
+          "penalties": 0.0,
+          "net_revenue": 837655.4700000006,
+          "walked": 0
+        }
+      },
+      "current_benchmark": {
+        "net_revenue": 885346.990000001,
+        "revenue": 885977.990000001,
+        "penalties": 631.0,
+        "seated": 4044,
+        "walked": 8,
+        "occupied_nights": 10475.0,
+        "by_origin": {
+          "new": {
+            "revenue": 885977.990000001,
+            "penalties": 631.0,
+            "walked": 8,
+            "seated": 4044,
+            "foregone_revenue": 252.4
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 585213.4400000004,
+            "penalties": 0.0,
+            "seated": 2209,
+            "walked": 0,
+            "occupied_nights": 5777.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 585213.4400000004,
+            "accepted_requests": 3027,
+            "rejected_requests": 115,
+            "occupancy": 0.5063990182328191
+          },
+          "Seaside Hotel": {
+            "revenue": 300764.55,
+            "penalties": 631.0,
+            "seated": 1835,
+            "walked": 8,
+            "occupied_nights": 4698.0,
+            "foregone_revenue": 252.4,
+            "net_revenue": 300133.55,
+            "accepted_requests": 2108,
+            "rejected_requests": 6,
+            "occupancy": 0.49577880962431403
+          }
+        },
+        "foregone_revenue": 252.4,
+        "initial_in_house": {
+          "Downtown Hotel": 0,
+          "Seaside Hotel": 0
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 124.0,
+          "Seaside Hotel": 103.0
+        },
+        "accepted_requests": 5135,
+        "requests": 5256,
+        "rejected_requests": 121,
+        "commitments": 0,
+        "occupancy": 0.5015801570580348,
+        "change_vs_inherited_only": {
+          "revenue": 885977.990000001,
+          "penalties": 631.0,
+          "net_revenue": 885346.990000001,
+          "walked": 8
+        }
+      },
+      "selected": {
+        "net_revenue": 892644.470000001,
+        "revenue": 893810.7700000011,
+        "penalties": 1166.3,
+        "seated": 4073,
+        "walked": 14,
+        "occupied_nights": 10559.0,
+        "by_origin": {
+          "new": {
+            "revenue": 893810.7700000011,
+            "penalties": 1166.3,
+            "walked": 14,
+            "seated": 4073,
+            "foregone_revenue": 466.52
+          }
+        },
+        "by_hotel": {
+          "Downtown Hotel": {
+            "revenue": 592826.3800000004,
+            "penalties": 0.0,
+            "seated": 2238,
+            "walked": 0,
+            "occupied_nights": 5858.0,
+            "foregone_revenue": 0.0,
+            "net_revenue": 592826.3800000004,
+            "accepted_requests": 3061,
+            "rejected_requests": 81,
+            "occupancy": 0.5134992987377279
+          },
+          "Seaside Hotel": {
+            "revenue": 300984.39,
+            "penalties": 1166.3,
+            "seated": 1835,
+            "walked": 14,
+            "occupied_nights": 4701.0,
+            "foregone_revenue": 466.52,
+            "net_revenue": 299818.09,
+            "accepted_requests": 2114,
+            "rejected_requests": 0,
+            "occupancy": 0.4960953989024905
+          }
+        },
+        "foregone_revenue": 466.52,
+        "initial_in_house": {
+          "Downtown Hotel": 0,
+          "Seaside Hotel": 0
+        },
+        "minimum_initial_free_rooms": {
+          "Downtown Hotel": 124.0,
+          "Seaside Hotel": 103.0
+        },
+        "accepted_requests": 5175,
+        "requests": 5256,
+        "rejected_requests": 81,
+        "commitments": 0,
+        "occupancy": 0.5056023750239418,
+        "change_vs_inherited_only": {
+          "revenue": 893810.7700000011,
+          "penalties": 1166.3,
+          "net_revenue": 892644.470000001,
+          "walked": 14
+        }
+      },
+      "comparisons": {
+        "capacity": {
+          "net_revenue": 54989.000000000466,
+          "revenue": 56155.30000000051,
+          "penalties": 1166.3
+        },
+        "current_benchmark": {
+          "net_revenue": 7297.479999999981,
+          "revenue": 7832.780000000028,
+          "penalties": 535.3
+        }
+      }
+    }
+  },
+  "diagnostic_note": "October\u2013December is previously inspected, not a pristine holdout.",
+  "historical_rate_baseline": {
+    "rows": 4512,
+    "log_loss": 0.5977933149788276,
+    "brier": 0.20374990727094977,
+    "auc": 0.518830450093164
+  },
+  "search": {
+    "allowances": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.3,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "protection": [
+      0,
+      1
+    ],
+    "winner_at_upper_bound": false
+  },
+  "selected": {
+    "version": 3,
+    "model": "logistic",
+    "mode": "expected",
+    "margin": 0.0,
+    "allowance": 0,
+    "allowance_fraction": 0.1,
+    "protection": 1.0
+  },
+  "selected_name": "logistic_extra_0.1_price_1.0",
+  "improvement_vs_current_benchmark": 8806.480000001146
+}
