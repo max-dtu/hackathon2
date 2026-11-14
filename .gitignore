@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+*.pyc
+# generated locally by train_show_model.py; solution.py retrains from train.csv if it is missing
+show_model.joblib
