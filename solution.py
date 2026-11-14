@@ -23,6 +23,7 @@ HOW IT WORKS (two steps per booking request)
 """
 import bisect
 import math
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -45,6 +46,41 @@ NUM = ["days_ahead", "weekend_nights", "weekday_nights", "adults", "children", "
        "special_requests", "nights"]
 
 
+def _key(v) -> str:
+    """Canonical text for a category value, so 9, 9.0, "9" and "9.0" match and None == NaN."""
+    if v is None:
+        return "nan"
+    if isinstance(v, str):
+        v = v.strip()
+        try:
+            v = float(v)
+        except ValueError:
+            return v
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return str(v)
+    if f != f:
+        return "nan"
+    return str(int(f)) if f.is_integer() else str(f)
+
+
+def _num(v) -> float:
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return np.nan
+    return f
+
+
+def _nights(b) -> int:
+    """Stay length; falls back to weekend + weekday nights if `nights` is missing or bad."""
+    n = _num(b.get("nights"))
+    if n != n:
+        n = _num(b.get("weekend_nights", 0)) + _num(b.get("weekday_nights", 0))
+    return int(n) if n == n and n > 0 else 0
+
+
 class ShowUpModel:
     """P(guest shows up | booking). Gradient-boosted trees + cross-fitted Platt calibration."""
 
@@ -56,9 +92,11 @@ class ShowUpModel:
 
         # Calibration: a model that never saw the last 90 days, scored on the last 90 days,
         # tells us how over/under-confident the trees are on fresh bookings.
-        probe = self._fit(early)
-        raw = self._raw(probe, recent)
-        self.calib = LogisticRegression().fit(self._logit(raw)[:, None], 1 - recent.cancelled)
+        self.calib = None  # identity if there is too little recent data to calibrate on
+        if len(recent) >= 200 and len(early) >= 1000 and recent.cancelled.nunique() == 2:
+            probe = self._fit(early)
+            raw = self._raw(probe, recent)
+            self.calib = LogisticRegression().fit(self._logit(raw)[:, None], 1 - recent.cancelled)
 
         self.trees = self._fit(history)  # final model uses everything
 
@@ -69,7 +107,7 @@ class ShowUpModel:
         return np.log(p / (1 - p))
 
     def _fit(self, df):
-        maps = {c: {v: i for i, v in enumerate(df[c].astype(str).value_counts().index[:200])}
+        maps = {c: {v: i for i, v in enumerate(df[c].map(_key).value_counts().index[:200])}
                 for c in CAT}
         clf = HistGradientBoostingClassifier(
             categorical_features=list(range(len(NUM), len(NUM) + len(CAT))),
@@ -79,8 +117,10 @@ class ShowUpModel:
 
     @staticmethod
     def _matrix(df, maps):
-        num = df[NUM].astype(float).to_numpy()
-        cat = np.column_stack([df[c].astype(str).map(maps[c]).fillna(-1).to_numpy() for c in CAT])
+        num = np.column_stack([pd.to_numeric(df[c], errors="coerce").to_numpy(float) if c in df
+                               else np.full(len(df), np.nan) for c in NUM])
+        cat = np.column_stack([df[c].map(_key).map(maps[c]).fillna(-1).to_numpy(float) if c in df
+                               else np.full(len(df), -1.0) for c in CAT])
         return np.hstack([num, cat])
 
     def _raw(self, model, df):
@@ -88,16 +128,20 @@ class ShowUpModel:
         return clf.predict_proba(self._matrix(df, maps))[:, 1]
 
     # -- public ------------------------------------------------------------------------------
-    def predict(self, df: pd.DataFrame) -> np.ndarray:
-        raw = self._raw(self.trees, df)
+    def _calibrate(self, raw):
+        if self.calib is None:
+            return raw
         return self.calib.predict_proba(self._logit(raw)[:, None])[:, 1]
+
+    def predict(self, df: pd.DataFrame) -> np.ndarray:
+        return self._calibrate(self._raw(self.trees, df))
 
     def predict_one(self, b: dict) -> float:
         clf, maps = self.trees
-        row = [float(b[c]) if b[c] is not None and b[c] == b[c] else np.nan for c in NUM]
-        row += [maps[c].get(str(b[c]), -1) for c in CAT]
+        row = [_num(b.get(c)) for c in NUM]
+        row += [maps[c].get(_key(b.get(c)), -1) for c in CAT]
         raw = clf.predict_proba(np.array([row], dtype=float))[:, 1]
-        return float(self.calib.predict_proba(self._logit(raw)[:, None])[0, 1])
+        return float(self._calibrate(raw)[0])
 
 
 class PickupForecast:
@@ -111,15 +155,16 @@ class PickupForecast:
             # Booking pace: this period's bookings already on the books vs. last year's at the
             # same point. 2016 ran well ahead of 2015, so copying last year 1:1 undershoots.
             g = 1.0
-            if commitments is not None and len(commitments):
-                ly0 = cap.index[0] - pd.Timedelta(days=364)
+            first = pd.Timestamp(cap.index[0])
+            if commitments is not None and len(commitments) and "hotel" in commitments:
+                ly0 = first - pd.Timedelta(days=364)
                 ly1 = ly0 + pd.Timedelta(days=len(cap))
                 last = ((history.hotel == h) & (history.arrival_date >= ly0) &
                         (history.arrival_date < ly1) & (history.booking_date < ly0)).sum()
                 if last > 0:
                     g = float(np.clip((commitments.hotel == h).sum() / last, 0.5, 2.0))
             self.growth[h] = g
-            hist = history[history.hotel == h]
+            hist = history[(history.hotel == h) & history.nights.between(1, 400)]
             n = hist.nights.to_numpy().astype(int)
             idx = np.repeat(np.arange(len(hist)), n)
             offset = np.arange(n.sum()) - np.repeat(np.cumsum(n) - n, n)  # 0..nights-1 per stay
@@ -133,10 +178,12 @@ class PickupForecast:
             for night_date, g in df.groupby("night"):
                 table[night_date] = (g.lead.to_numpy(), np.r_[0, g.show.cumsum()],
                                      np.r_[0, g.show_rate.cumsum()])
-            self.start[h], self.table[h] = cap.index[0], table
+            self.start[h], self.table[h] = first, table
 
     def still_to_come(self, h, night_idx, lead_days):
         """(expected future shows, their average nightly rate) for one night of the period."""
+        if h not in self.table:
+            return 0.0, 0.0
         key = self.start[h] + pd.Timedelta(days=night_idx - 364)
         if key not in self.table[h]:
             return 0.0, 0.0
@@ -163,13 +210,19 @@ class Solution:
                     independent (a group cancels together), so occupancy swings more than
                     independent coin flips suggest."""
         if history is None:
-            history = pd.read_csv(Path(__file__).with_name("train.csv"),
-                                  parse_dates=["arrival_date", "booking_date"])
+            path = Path(__file__).with_name("train.csv")
+            if not path.exists():
+                path = Path("train.csv")  # evaluate.py run from the repo with solution elsewhere
+            history = pd.read_csv(path, parse_dates=["arrival_date", "booking_date"])
         history = history.drop(columns=["deposit"], errors="ignore")
         if model is None:
             model = ShowUpModel(history)
         self.model, self.p_shift, self.walk_model = model, p_shift, walk_model
         self.bid_scale, self.var_scale = bid_scale, var_scale
+        # Capacity as a gap-free daily series starting at its first date (dates or Timestamps).
+        capacity = {h: self._daily(s) for h, s in capacity.items()}
+        if commitments is None:
+            commitments = pd.DataFrame()
         self.pickup = PickupForecast(history, capacity, commitments) if bid_scale else None
         # One-row predictions are ~30x faster single-threaded (thread start-up dominates).
         threadpool_limits(1, user_api="openmp")
@@ -181,26 +234,56 @@ class Solution:
         self.mu = {h: np.zeros(len(c)) for h, c in self.cap.items()}
         self.var = {h: np.zeros(len(c)) for h, c in self.cap.items()}
         self.arrivals = {h: [[] for _ in c] for h, c in self.cap.items()}  # sorted (value, p)
+        self.count = {h: np.zeros(len(c)) for h, c in self.cap.items()}  # for the fallback rule
+        self._warned = False
         if len(commitments):
-            for b, p in zip(commitments.to_dict("records"), self.model.predict(commitments)):
-                self._add(b, self._shift(p))
+            records = commitments.to_dict("records")
+            try:
+                probs = self.model.predict(commitments)
+            except Exception as exc:  # never fail setup: assume the historical show rate
+                self._warn(exc)
+                probs = np.full(len(records), 1 - float(history.cancelled.mean()))
+            for b, p in zip(records, probs):
+                try:
+                    self._add(b, self._shift(p))
+                except Exception as exc:
+                    self._warn(exc)
 
+    @staticmethod
+    def _daily(s: pd.Series) -> pd.Series:
+        s = pd.Series(pd.to_numeric(s.to_numpy(), errors="coerce"), index=pd.to_datetime(s.index))
+        s = s[~s.index.isna()].sort_index()
+        full = pd.date_range(s.index.min(), s.index.max(), freq="D")
+        return s.groupby(level=0).last().reindex(full).ffill().fillna(0).clip(lower=0)
+
+    def _warn(self, exc):
+        if not self._warned:
+            print(f"[solution] falling back to simple rule after error: {exc!r}", file=sys.stderr)
+            self._warned = True
     def _shift(self, p):
         if self.p_shift == 0:
             return p
         return 1 / (1 + np.exp(-(ShowUpModel._logit(p) + self.p_shift)))
 
+    @staticmethod
+    def _value(b) -> float:
+        rate = _num(b.get("nightly_rate"))
+        return rate * _nights(b) if rate == rate else 0.0
+
     def _span(self, b):
         h = b["hotel"]
         lo = (pd.Timestamp(b["arrival_date"]) - self.start[h]).days
-        return h, lo, slice(max(lo, 0), min(lo + int(b["nights"]), len(self.cap[h])))
+        return h, lo, slice(max(lo, 0), max(min(lo + _nights(b), len(self.cap[h])), 0))
 
     def _add(self, b, p):
+        if b.get("hotel") not in self.cap:
+            return
         h, lo, s = self._span(b)
         self.mu[h][s] += p
         self.var[h][s] += p * (1 - p) * self.var_scale
+        self.count[h][s] += 1
         if 0 <= lo < len(self.cap[h]):
-            bisect.insort(self.arrivals[h][lo], (b["nightly_rate"] * b["nights"], p))
+            bisect.insort(self.arrivals[h][lo], (self._value(b), p))
 
     def _full_risk(self, h, s):
         """Per night: q = P(already-confirmed guests who show up fill every room), and the
@@ -229,9 +312,11 @@ class Solution:
     def explain(self, b: dict) -> dict:
         """Everything behind one decision -- handy for the presentation."""
         p = float(self._shift(self.model.predict_one(b)))
-        v = b["nightly_rate"] * b["nights"]
+        v = self._value(b)
         h, lo, s = self._span(b)
         q, over = self._full_risk(h, s)
+        if v <= 0:  # a free or unpriced stay can only cost us (a room, or a walk)
+            return dict(p_show=p, q_full=0.0, stay_value=v, expected_value=0.0, accept=False)
         if len(q) == 0:
             return dict(p_show=p, q_full=0.0, stay_value=v, expected_value=p * v, accept=True)
 
@@ -274,7 +359,24 @@ class Solution:
         return self.bid_scale * total
 
     def decide(self, booking: dict) -> bool:
-        e = self.explain(booking)
-        if e["accept"]:
-            self._add(booking, e["p_show"])
-        return bool(e["accept"])
+        try:
+            if booking.get("hotel") not in self.cap:
+                return True  # a hotel we hold no capacity for: nothing to protect
+            e = self.explain(booking)
+            if e["accept"]:
+                self._add(booking, e["p_show"])
+            return bool(e["accept"])
+        except Exception as exc:  # never crash the evaluation
+            self._warn(exc)
+            return self._fallback(booking)
+
+    def _fallback(self, b) -> bool:
+        """Model-free rule: overbook each night by 30% (close to the best fixed factor)."""
+        try:
+            h, lo, s = self._span(b)
+            ok = bool(np.all(self.count[h][s] < self.cap[h][s] * 1.3))
+            if ok:
+                self.count[h][s] += 1
+            return ok
+        except Exception:
+            return False
