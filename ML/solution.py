@@ -8,7 +8,15 @@ Your result is the net revenue: revenue of seated guests - walk penalties.
 
 Reading any 2017 data yourself is cheating.
 """
+import sys
+from pathlib import Path
+
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))   # find booking_model from anywhere
+from booking_model import BookingPolicy, load_history  # noqa: E402
+
+MODEL_KIND = "combined"   # which stay model to use; `python ML/backtest.py` compares them
 
 
 class Solution:
@@ -23,8 +31,10 @@ class Solution:
         capacity     hotel -> rooms free on each night of 2017 (indexed by date): the rooms minus
                      guests who arrived in 2016 and are still in house.
         """
+        self.policy = BookingPolicy(load_history(), commitments, capacity, model_kind=MODEL_KIND)
 
     def decide(self, booking: dict) -> bool:
         """Called once per 2017 booking request, in booking-date order. `booking` is one row with
         the same columns as commitments, as {column: value}. Return True to confirm the booking,
         False to reject it."""
+        return self.policy.decide(booking)

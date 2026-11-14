@@ -19,7 +19,7 @@ from sklearn.metrics import roc_auc_score
 from booking_model import MODEL_KINDS, ROOMS, WALK_PENALTY, BookingPolicy, load_history
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))   # repo root, for solution.py
-import solution  # noqa: E402
+import ML.solution as solution  # noqa: E402
 
 MODEL_KIND = getattr(solution, "MODEL_KIND", None)   # the model solution.py uses, if it names one
 

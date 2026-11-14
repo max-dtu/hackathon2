@@ -401,6 +401,8 @@ class BookingPolicy:
                  calibration: str = "period", ignore: tuple = (), forecast: str = "blend",
                  boldness: float = 0.0, drift_per_year: float = 1.0):
         history = _clean(history)
+        # Below 1, we expect fewer late bidders than the forecasts say, so fewer rooms are held back.
+        self.demand_multiplier = demand_multiplier
         # Both lower the stay chances the policy works with, so it books more guests per room.
         # boldness applies everywhere; drift_per_year grows with the distance from the training
         # data, because the model over-promises more the further ahead it looks. In log-odds.
@@ -445,8 +447,7 @@ class BookingPolicy:
             then = ((prev["hotel"] == hotel) & (prev["booking_date"] + YEAR < self.origin)).sum()
             now = (commitments["hotel"] == hotel).sum()
             self.pace[hotel] = float(np.clip(now / then, 0.6, 1.8)) if then >= 50 else 1.0
-        weight = (self.model.predict(prev)
-                  * prev["hotel"].map(self.pace).to_numpy(float) * demand_multiplier)
+        weight = self.model.predict(prev) * prev["hotel"].map(self.pace).to_numpy(float)
         self.forecast = DemandForecast(prev, weight, self.origin)
 
         # The second view of future bidders: what the last weeks of requests looked like.
@@ -460,6 +461,7 @@ class BookingPolicy:
                 self.recent.observe(h, int(a), int(n), float(r), float(pi), int(b))
 
     def _price_floor(self, hotel: str, night: int, today: int, free_rooms: float) -> float:
+        free_rooms = free_rooms / self.demand_multiplier
         if self.forecast_mode == "last_year":
             return self.forecast.price_floor(hotel, night, today, free_rooms)
         recent = self.recent.price_floor(hotel, night, today, free_rooms)
