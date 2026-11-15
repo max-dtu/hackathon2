@@ -1,15 +1,4 @@
-Ran trace accepted and rejected 2017 booking examples · Exited with code 1
 
-Running a real 2017 booking from [test.csv](file:///Users/homefolder/Downloads/projects/hackathon2/test.csv) through `Solution` to trace the exact numbers—waiting for the trace to finish.
-
-Ran trace accepted and rejected 2017 booking examples · Exited with code 1
-
-Re-running the trace on [test.csv](file:///Users/homefolder/Downloads/projects/hackathon2/test.csv) now—waiting for it to finish.
-
-Ran check test.csv header columns
-Ran trace accepted and rejected 2017 booking examples
-
-Running the trace on [test.csv](file:///Users/homefolder/Downloads/projects/hackathon2/test.csv) with the exact column names—waiting for it to finish.
 
 Here are two real 2017 requests from [test.csv](file:///Users/homefolder/Downloads/projects/hackathon2/test.csv) traced step-by-step through `Solution.decide()`:
 
